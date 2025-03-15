@@ -25,8 +25,8 @@ public class UserController {
         return userRepository.save(user);
     }
 
-    @DeleteMapping("/delete")
-    public String deleteUserByID(@RequestBody int id) {
+    @DeleteMapping("/{id}")
+    public String deleteUserByID(@PathVariable int id) {
         System.out.print("Delete request received");
 
         if(!userRepository.existsById(id)) return "Id "+ id + "doesn't exist in DB";

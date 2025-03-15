@@ -16,11 +16,6 @@ public class BackendApplication {
         return "Hello World!";
     }
 
-    @Bean
-    public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder();
-    }
-
     public static void main(String[] args) {
         SpringApplication.run(BackendApplication.class, args);
 

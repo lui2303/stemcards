@@ -2,6 +2,7 @@ package com.luiswiederhold.backend.security;
 
 import com.luiswiederhold.backend.user.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,6 +13,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,9 +29,8 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
     @Autowired
-    private UserDetailsService userDetailsService;
+    private UserDetailsService customUserDetailsService;
 
     @Bean
     public PasswordEncoder encoder() {
@@ -39,10 +40,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/login", "/register").permitAll()
-                        .anyRequest().authenticated()
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/register") // Disable CSRF for /register
                 )
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/register").permitAll() // Allow access to /register
+                        .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .formLogin(Customizer.withDefaults());
 
@@ -50,22 +53,16 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider() {
-        System.out.print("Custom auth provider");
-        return new TestingAuthenticationProvider();
-    }
-
-    @Bean
     public AuthenticationManager authenticationManager() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(encoder());
-        return new ProviderManager(List.of(authProvider));
+        return new ProviderManager(List.of(daoAuthenticationProvider()));
     }
 
     @Bean
-    public UserDetailsService customUserDetailsService(){
-        return new CustomUserDetailsService();
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(customUserDetailsService);
+        authProvider.setPasswordEncoder(encoder());
+        return authProvider;
     }
-    // TODO: exchange in memory UserDetailsManagement for DB Storage
+
 }
