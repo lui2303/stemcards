@@ -21,4 +21,6 @@ public class AuthController {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
+
+    // login via postman usually requires csrf token, which I disabled for development purposes
 }
