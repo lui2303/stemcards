@@ -49,12 +49,15 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .formLogin(Customizer.withDefaults())
                 .rememberMe((remember) -> remember
-                    .rememberMeServices(rememberMeServices())
-        );
+                    .rememberMeServices(rememberMeServices()));
 
         return http.build();
     }
 
+    @Bean
+    RememberMeAuthenticationFilter rememberMeFilter() {
+        return new RememberMeAuthenticationFilter(authenticationManager(), rememberMeServices());
+    }
 
     @Bean
     TokenBasedRememberMeServices rememberMeServices() {
