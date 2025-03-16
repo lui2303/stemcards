@@ -55,11 +55,6 @@ public class SecurityConfig {
     }
 
     @Bean
-    RememberMeAuthenticationFilter rememberMeFilter() {
-        return new RememberMeAuthenticationFilter(authenticationManager(), rememberMeServices());
-    }
-
-    @Bean
     TokenBasedRememberMeServices rememberMeServices() {
         return new TokenBasedRememberMeServices(PRIVATEKEY, customUserDetailsService);
     }

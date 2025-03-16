@@ -18,10 +18,33 @@ public class User {
     private String email;
     @Column(unique = true, nullable = false)
     private String password;
+    @Column
+    private String surname;
+    @Column
+    private String lastname;
 
-    public User(String email, String password) {
+    public User(String email, String password, String surname, String lastname) {
         this.email = email;
         this.password = password;
+        this.surname = surname;
+        this.lastname = lastname;
+    }
+
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     private User() {}
