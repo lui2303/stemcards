@@ -39,7 +39,7 @@ public class FlashCardController {
             answerURI = flashcardService.storeImage(true, answerImage);
         }
 
-        Flashcard flashcard = new Flashcard(answerLatex, answerURI, questionLatex, questionURI, LocalDateTime.now(), LocalDateTime.now(), flashcardDTO.getUsername());
+        Flashcard flashcard = new Flashcard(answerLatex, answerURI, questionLatex, questionURI, LocalDateTime.now(), LocalDateTime.now(), flashcardDTO.getPathHierachy(), flashcardDTO.getUsername());
 
         return flashcardService.storeFlashcard(flashcard);
     }

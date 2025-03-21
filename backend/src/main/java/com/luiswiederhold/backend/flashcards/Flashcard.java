@@ -34,8 +34,9 @@ public class Flashcard {
 
     private LocalDateTime creationDate;
     private LocalDateTime lastUpdatedOn;
+    private String hierachy;
 
-    public Flashcard(String answerLatex, URI answerImage, String questionLatex, URI questionImage, LocalDateTime creationDate, LocalDateTime lastUpdatedOn, String username) {
+    public Flashcard(String answerLatex, URI answerImage, String questionLatex, URI questionImage, LocalDateTime creationDate, LocalDateTime lastUpdatedOn, String hierachy, String username) {
         this.answerLatex = answerLatex;
         this.answerImage = answerImage;
         this.questionLatex = questionLatex;
@@ -43,6 +44,7 @@ public class Flashcard {
         this.creationDate = creationDate;
         this.lastUpdatedOn = lastUpdatedOn;
         this.username = username;
+        this.hierachy = hierachy;
     }
 
     private String username;
