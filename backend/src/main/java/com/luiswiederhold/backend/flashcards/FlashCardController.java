@@ -21,7 +21,7 @@ public class FlashCardController {
     private FlashcardService flashcardService;
 
     @PostMapping("/create_flashcard")
-    public Flashcard createNewFlashcard(@RequestParam MultipartFile questionImage, @RequestParam MultipartFile answerImage, @RequestBody FlashcardDTO flashcardDTO) {
+    public Flashcard createNewFlashcard(@RequestParam MultipartFile questionImage, @RequestParam MultipartFile answerImage, @RequestBody FlashcardDTO flashcardDTO) throws LowConfidenceException {
         URI questionURI = null;
         URI answerURI = null;
         String questionLatex = flashcardDTO.getQuestionLatex();
