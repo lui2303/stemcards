@@ -1,9 +1,19 @@
 package com.luiswiederhold.backend.flashcards;
 
+
+import org.springframework.cglib.core.Local;
+
+import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.Date;
 
-public abstract class Flashcard {
-    // maybe abstract class
+public class Flashcard {
+    // TODO:
+    // add upload_flashcard_image endpoint
+    // add upload_flashcard_latex endpoint
+    // add path to create the flashcard hierachy
+    // add last_score or score_history for the scores on this flashcard
+    // create a algorithm to recommend flashcard with lower scores more often
 
     /*
     Schema:
@@ -12,61 +22,30 @@ public abstract class Flashcard {
         "is_url_to_ressource": false,
         "value" : "Latex output oder link zu der Datei, die handschrifltich geschriebenes speichert. Ggf. muss dieses image für den browser rescaled werden" TODO: endpoint /rescale implementieren oder direkt im frontend vornehmen
         "creation_date": 23.03.2005,
-        "last_updated_on":23.03.2008,
+        "last_updated_on": 23.03.2008,
         "last_revised_on": 23.03.2009,
     }
      */
-     private boolean isUrlToResource;
-     private String value;
-     private Date creationDate;
-     private Date lastUpdatedOn;
-     private Date lastRevisedOn;
+    private String answerLatex;
+    private URI answerImage;
 
-    public Flashcard(boolean isUrlToResource, String value, Date creationDate, Date lastUpdatedOn, Date lastRevisedOn) {
-        this.isUrlToResource = isUrlToResource;
-        this.value = value;
+    private String questionLatex;
+    private URI questionImage;
+
+    private LocalDateTime creationDate;
+    private LocalDateTime lastUpdatedOn;
+
+    public Flashcard(String answerLatex, URI answerImage, String questionLatex, URI questionImage, LocalDateTime creationDate, LocalDateTime lastUpdatedOn, String username) {
+        this.answerLatex = answerLatex;
+        this.answerImage = answerImage;
+        this.questionLatex = questionLatex;
+        this.questionImage = questionImage;
         this.creationDate = creationDate;
         this.lastUpdatedOn = lastUpdatedOn;
-        this.lastRevisedOn = lastRevisedOn;
+        this.username = username;
     }
 
-    public boolean isUrlToResource() {
-        return isUrlToResource;
-    }
+    private String username;
 
-    public void setUrlToResource(boolean urlToResource) {
-        isUrlToResource = urlToResource;
-    }
 
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public Date getLastUpdatedOn() {
-        return lastUpdatedOn;
-    }
-
-    public void setLastUpdatedOn(Date lastUpdatedOn) {
-        this.lastUpdatedOn = lastUpdatedOn;
-    }
-
-    public Date getLastRevisedOn() {
-        return lastRevisedOn;
-    }
-
-    public void setLastRevisedOn(Date lastRevisedOn) {
-        this.lastRevisedOn = lastRevisedOn;
-    }
 }
