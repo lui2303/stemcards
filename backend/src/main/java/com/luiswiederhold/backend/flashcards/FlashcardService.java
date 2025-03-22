@@ -1,38 +1,38 @@
 package com.luiswiederhold.backend.flashcards;
 
+import com.luiswiederhold.backend.flashcards.exception.LowConfidenceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Path;
-
+// TODO: Username can't contain /
 @Service
 public class FlashcardService {
     @Autowired
     private PostgresFlashcardStorageService postgresFlashcardStorageService;
+
     @Autowired
-    private S3FlashcardStorageService s3FlashcardStorageService;
+    private ImageStorageService imageStorageService;
 
-
-    public URI constructFlashcardImageURI(Flashcard flashcard) {
-        // creates the relative s3 bucket path for the given user/flashcard e.x. /luis/analysis2/diferential_equations/piccard_lindelöf/2200/answer
-        return null;
+    public FlashcardService(PostgresFlashcardStorageService postgresFlashcardStorageService) {
+        this.postgresFlashcardStorageService = postgresFlashcardStorageService;
     }
 
     public URI storeImage(boolean answer, MultipartFile image) {
+        // store image as s3 bucket based on the constructFlashcardImageURI() function path
         return null;
     }
 
-    public String image2Latex(MultipartFile image) {
+    public String image2Latex(MultipartFile image) throws LowConfidenceException {
         // API call to Mathpix Snip to convert image to Latex
         return "";
     }
 
     public Flashcard storeFlashcard(Flashcard flashcard) {
-
         // store flashcard in postgres database
-
         return flashcard;
     }
 }
