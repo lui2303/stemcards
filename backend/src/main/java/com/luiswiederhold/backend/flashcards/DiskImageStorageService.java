@@ -18,7 +18,7 @@ import java.nio.file.Paths;
 public class DiskImageStorageService implements ImageStorageService {
     @Override
     public URI constructFlashcardImageURI(FlashcardSideDTO flashcardSideDTO) throws URISyntaxException {
-        // TODO: handle cases where image or flashcardDTO is NULL
+        if (flashcardSideDTO == null) throw new IllegalArgumentException("flashcardSideDTO must be not null");
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append(DiskImageStorageServiceConfig.STORAGE_LOCATION);
