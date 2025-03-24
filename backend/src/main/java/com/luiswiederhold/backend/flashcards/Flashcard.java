@@ -11,6 +11,7 @@ public class Flashcard {
     // TODO:
     // remove nanotime ID and replace it with a lazy approach by initializing a Flashcard object with null attributes
     // to set later with setters
+    // move this to a Entity object to store it in the flashcard database
     // add last_score or score_history for the scores on this flashcard
     // create a algorithm to recommend flashcard with lower scores more often
 

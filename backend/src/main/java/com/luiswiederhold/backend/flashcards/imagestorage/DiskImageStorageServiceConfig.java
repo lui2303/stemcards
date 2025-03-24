@@ -1,4 +1,4 @@
-package com.luiswiederhold.backend.flashcards;
+package com.luiswiederhold.backend.flashcards.imagestorage;
 
 import org.springframework.context.annotation.Configuration;
 

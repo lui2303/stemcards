@@ -1,6 +1,7 @@
-package com.luiswiederhold.backend.flashcards;
+package com.luiswiederhold.backend.flashcards.imagestorage;
 
 import com.luiswiederhold.backend.flashcards.DTOs.FlashcardSideDTO;
+import com.luiswiederhold.backend.flashcards.Flashcard;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
