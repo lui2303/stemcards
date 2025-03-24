@@ -9,20 +9,10 @@ import java.util.Date;
 
 public class Flashcard {
     // TODO:
+    // remove nanotime ID and replace it with a lazy approach by initializing a Flashcard object with null attributes
+    // to set later with setters
     // add last_score or score_history for the scores on this flashcard
     // create a algorithm to recommend flashcard with lower scores more often
-
-    /*
-    Schema:
-
-    {
-        "is_url_to_ressource": false,
-        "value" : "Latex output oder link zu der Datei, die handschrifltich geschriebenes speichert. Ggf. muss dieses image für den browser rescaled werden" TODO: endpoint /rescale implementieren oder direkt im frontend vornehmen
-        "creation_date": 23.03.2005,
-        "last_updated_on": 23.03.2008,
-        "last_revised_on": 23.03.2009,
-    }
-     */
 
     private Long ID;
     private String answerLatex;
@@ -47,6 +37,8 @@ public class Flashcard {
         this.hierachy = hierachy;
         this.ID = ID;
     }
+
+    public Flashcard() {}
 
     public Long getID() {
         return ID;
