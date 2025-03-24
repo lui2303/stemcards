@@ -1,7 +1,7 @@
 package com.luiswiederhold.backend.flashcards;
 
-import com.luiswiederhold.backend.flashcards.DTOs.FlashcardContentDTO;
-import com.luiswiederhold.backend.flashcards.DTOs.FlashcardSideDTO;
+import com.luiswiederhold.backend.DTO.FlashcardContentDTO;
+import com.luiswiederhold.backend.DTO.FlashcardSideDTO;
 import com.luiswiederhold.backend.exception.LowConfidenceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package com.luiswiederhold.backend.flashcards.DTOs;
+package com.luiswiederhold.backend.DTO;
 
 import com.luiswiederhold.backend.flashcards.Flashcard;
 

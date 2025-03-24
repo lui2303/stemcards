@@ -1,6 +1,4 @@
-package com.luiswiederhold.backend.flashcards.DTOs;
-
-import com.luiswiederhold.backend.flashcards.Flashcard;
+package com.luiswiederhold.backend.DTO;
 
 public class FlashcardContentDTO {
     // DTO for a flashcard that is described by a question in Latex and an answer in Latex
