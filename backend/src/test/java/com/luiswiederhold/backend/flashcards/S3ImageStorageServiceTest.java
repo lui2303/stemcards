@@ -19,7 +19,7 @@ public class S3ImageStorageServiceTest {
 
     @Test
     void testConstructFlashcardImageURI_HighestHierachy() {
-        Flashcard flashcard = new Flashcard("", null, "", null, LocalDateTime.now(), LocalDateTime.now(), "/", "wiederhold.luis@gmx.net");
+        Flashcard flashcard = new Flashcard(System.nanoTime(),"", null, "", null, LocalDateTime.now(), LocalDateTime.now(), "/", "wiederhold.luis@gmx.net");
 
         FlashcardSideDTO flashcardSideDTO = FlashcardSideDTO.createFromFlashcard(flashcard, true);
 
@@ -48,7 +48,7 @@ public class S3ImageStorageServiceTest {
 
     @Test
     void testConstructFlashcardImageURI_lowerHierachy() {
-        Flashcard flashcard = new Flashcard("", null, "", null, LocalDateTime.now(), LocalDateTime.now(), "/", "wiederhold.luis@gmx.net");
+        Flashcard flashcard = new Flashcard(System.nanoTime(), "", null, "", null, LocalDateTime.now(), LocalDateTime.now(), "/", "wiederhold.luis@gmx.net");
 
         FlashcardSideDTO flashcardSideDTO = FlashcardSideDTO.createFromFlashcard(flashcard, true);
 

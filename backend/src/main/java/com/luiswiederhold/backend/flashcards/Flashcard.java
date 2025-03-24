@@ -36,7 +36,7 @@ public class Flashcard {
     private String hierachy;
     private String username;
 
-    public Flashcard(String answerLatex, URI answerImage, String questionLatex, URI questionImage, LocalDateTime creationDate, LocalDateTime lastUpdatedOn, String hierachy, String username) {
+    public Flashcard(Long ID, String answerLatex, URI answerImage, String questionLatex, URI questionImage, LocalDateTime creationDate, LocalDateTime lastUpdatedOn, String hierachy, String username) {
         this.answerLatex = answerLatex;
         this.answerImage = answerImage;
         this.questionLatex = questionLatex;
@@ -45,6 +45,7 @@ public class Flashcard {
         this.lastUpdatedOn = lastUpdatedOn;
         this.username = username;
         this.hierachy = hierachy;
+        this.ID = ID;
     }
 
     public Long getID() {

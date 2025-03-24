@@ -25,13 +25,13 @@ public class FlashCardController {
         URI answerURI = null;
         String questionLatex = flashcardContentDTO.getQuestionLatex();
         String answerLatex = flashcardContentDTO.getAnswerLatex();
-
+        Long ID = System.nanoTime();
 
         if (questionImage != null) {
             System.out.println(flashcardService.getClass());
             questionLatex = flashcardService.image2Latex(questionImage);
 
-            FlashcardSideDTO flashcardSideDTO = new FlashcardSideDTO(0L, flashcardContentDTO.getUsername(), flashcardContentDTO.getPathHierachy(), false); // TODO: generate ID
+            FlashcardSideDTO flashcardSideDTO = new FlashcardSideDTO(ID, flashcardContentDTO.getUsername(), flashcardContentDTO.getPathHierachy(), false); // TODO: generate ID
 
             questionURI = flashcardService.storeImage(questionImage, flashcardSideDTO);
         }
@@ -39,12 +39,12 @@ public class FlashCardController {
         if (answerImage != null) {
             answerLatex = flashcardService.image2Latex(answerImage);
 
-            FlashcardSideDTO flashcardSideDTO = new FlashcardSideDTO(0L, flashcardContentDTO.getUsername(), flashcardContentDTO.getPathHierachy(), true);
+            FlashcardSideDTO flashcardSideDTO = new FlashcardSideDTO(ID, flashcardContentDTO.getUsername(), flashcardContentDTO.getPathHierachy(), true);
 
             answerURI = flashcardService.storeImage(answerImage, flashcardSideDTO);
         }
 
-        Flashcard flashcard = new Flashcard(answerLatex, answerURI, questionLatex, questionURI, LocalDateTime.now(), LocalDateTime.now(), flashcardContentDTO.getPathHierachy(), flashcardContentDTO.getUsername());
+        Flashcard flashcard = new Flashcard(ID, answerLatex, answerURI, questionLatex, questionURI, LocalDateTime.now(), LocalDateTime.now(), flashcardContentDTO.getPathHierachy(), flashcardContentDTO.getUsername());
 
         return flashcardService.storeFlashcard(flashcard);
     }

@@ -23,6 +23,7 @@ public class FlashcardService {
     }
 
     public URI storeImage(MultipartFile image, FlashcardSideDTO flashcardSideDTO) {
+        // store the image of the flashcard question or the flashcard answer using the ImageStorageService API
         URI res;
         try {
             res = imageStorageService.storeFlashcardContent(image, flashcardSideDTO);
