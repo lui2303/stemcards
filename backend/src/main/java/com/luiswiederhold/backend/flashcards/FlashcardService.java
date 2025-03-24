@@ -1,7 +1,7 @@
 package com.luiswiederhold.backend.flashcards;
 
 import com.luiswiederhold.backend.flashcards.DTOs.FlashcardSideDTO;
-import com.luiswiederhold.backend.flashcards.exception.LowConfidenceException;
+import com.luiswiederhold.backend.exception.LowConfidenceException;
 import com.luiswiederhold.backend.flashcards.imagestorage.ImageStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
