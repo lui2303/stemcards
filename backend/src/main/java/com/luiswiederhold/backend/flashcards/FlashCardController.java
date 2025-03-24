@@ -1,45 +1,50 @@
 package com.luiswiederhold.backend.flashcards;
 
-import com.luiswiederhold.backend.flashcards.DTOs.FlashcardDTO;
+import com.luiswiederhold.backend.flashcards.DTOs.FlashcardContentDTO;
+import com.luiswiederhold.backend.flashcards.DTOs.FlashcardSideDTO;
 import com.luiswiederhold.backend.flashcards.exception.LowConfidenceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URI;
 import java.time.LocalDateTime;
 
-@Controller
+@RestController
 public class FlashCardController {
     @Autowired
     private FlashcardService flashcardService;
 
-    @PostMapping("/create_flashcard")
-    public Flashcard createNewFlashcard(@RequestParam MultipartFile questionImage, @RequestParam MultipartFile answerImage, @RequestBody FlashcardDTO flashcardDTO) throws LowConfidenceException {
+    @PostMapping(value = "/create_flashcard", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Flashcard createNewFlashcard(@RequestParam("questionImage") MultipartFile questionImage, @RequestParam("answerImage") MultipartFile answerImage, @RequestPart("flashcardDTO") FlashcardContentDTO flashcardContentDTO) throws LowConfidenceException {
         URI questionURI = null;
         URI answerURI = null;
-        String questionLatex = flashcardDTO.getQuestionLatex();
-        String answerLatex = flashcardDTO.getAnswerLatex();
+        String questionLatex = flashcardContentDTO.getQuestionLatex();
+        String answerLatex = flashcardContentDTO.getAnswerLatex();
+
 
         if (questionImage != null) {
+            System.out.println(flashcardService.getClass());
             questionLatex = flashcardService.image2Latex(questionImage);
 
-            questionURI = flashcardService.storeImage(false, questionImage);
+            FlashcardSideDTO flashcardSideDTO = new FlashcardSideDTO(0L, flashcardContentDTO.getUsername(), flashcardContentDTO.getPathHierachy(), false); // TODO: generate ID
+
+            questionURI = flashcardService.storeImage(questionImage, flashcardSideDTO);
         }
 
         if (answerImage != null) {
             answerLatex = flashcardService.image2Latex(answerImage);
 
-            answerURI = flashcardService.storeImage(true, answerImage);
+            FlashcardSideDTO flashcardSideDTO = new FlashcardSideDTO(0L, flashcardContentDTO.getUsername(), flashcardContentDTO.getPathHierachy(), true);
+
+            answerURI = flashcardService.storeImage(answerImage, flashcardSideDTO);
         }
 
-        Flashcard flashcard = new Flashcard(answerLatex, answerURI, questionLatex, questionURI, LocalDateTime.now(), LocalDateTime.now(), flashcardDTO.getPathHierachy(), flashcardDTO.getUsername());
+        Flashcard flashcard = new Flashcard(answerLatex, answerURI, questionLatex, questionURI, LocalDateTime.now(), LocalDateTime.now(), flashcardContentDTO.getPathHierachy(), flashcardContentDTO.getUsername());
 
         return flashcardService.storeFlashcard(flashcard);
     }

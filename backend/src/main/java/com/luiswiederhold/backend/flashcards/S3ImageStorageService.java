@@ -1,24 +1,30 @@
 package com.luiswiederhold.backend.flashcards;
 
+import com.luiswiederhold.backend.flashcards.DTOs.FlashcardSideDTO;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
+@Service
+@Profile("prod")
 public class S3ImageStorageService implements ImageStorageService {
-    public URI constructFlashcardImageURI(Flashcard flashcard, boolean answer) throws URISyntaxException {
+    @Override
+    public URI constructFlashcardImageURI(FlashcardSideDTO flashcardSideDTO) throws URISyntaxException {
         // creates the relative s3 bucket path for the given user/flashcard e.x. /luis/analysis2/differential_equations/piccard_lindelöf/2200/answer
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("s3://your-bucket-name/");
-        stringBuilder.append(flashcard.getUsername()).append("/");
-        if(!flashcard.getHierachy().equals("/")) {
-            stringBuilder.append(flashcard.getHierachy());
+        stringBuilder.append(flashcardSideDTO.getUsername()).append("/");
+        if(!flashcardSideDTO.getHierachy().equals("/")) {
+            stringBuilder.append(flashcardSideDTO.getHierachy());
             stringBuilder.append("/");
         }
 
-        stringBuilder.append(flashcard.getID());
+        stringBuilder.append(flashcardSideDTO.getID());
         stringBuilder.append("/");
-        if(answer) {
+        if(flashcardSideDTO.isAnswerSide()) {
             stringBuilder.append("answer/image.png");
         } else {
             stringBuilder.append("question/image.png");
@@ -27,8 +33,13 @@ public class S3ImageStorageService implements ImageStorageService {
         return new URI(stringBuilder.toString());
     }
 
-    public URI storeFlashcardContent(MultipartFile image, boolean answer) throws URISyntaxException {
+    public URI storeFlashcardContent(MultipartFile image, FlashcardSideDTO flashcardSideDTO) throws URISyntaxException {
         // stores a question/answer in the corresponding s3 bucket calculated by constructFlashcardImageURI and returns that URI
         return new URI("");
+    }
+
+    @Override
+    public Flashcard getFlashcard(Long ID) {
+        return null;
     }
 }
