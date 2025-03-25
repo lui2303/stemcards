@@ -11,45 +11,25 @@ import java.util.Date;
 @Entity
 @Table(name = "flashcards")
 public class Flashcard {
-    // remove nanotime ID and replace it with a lazy approach by initializing a Flashcard object with null attributes
-    // to set later with setters
-    // move this to a Entity object to store it in the flashcard database
     // add last_score or score_history for the scores on this flashcard
     // create a algorithm to recommend flashcard with lower scores more often
-
-
-    @Override
-    public String toString() {
-        return "Flashcard{" +
-                "ID=" + ID +
-                ", answerLatex='" + answerLatex + '\'' +
-                ", answerImage=" + answerImage +
-                ", questionLatex='" + questionLatex + '\'' +
-                ", questionImage=" + questionImage +
-                ", creationDate=" + creationDate +
-                ", lastUpdatedOn=" + lastUpdatedOn +
-                ", hierachy='" + hierachy + '\'' +
-                ", username='" + username + '\'' +
-                '}';
-    }
-
     @Id
     private Long ID;
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String answerLatex;
     @Column
-    private URI answerImage;
-    @Column(unique = true, nullable = false)
+    private String answerImage; // stores the URI
+    @Column(nullable = false)
     private String questionLatex;
     @Column
-    private URI questionImage;
-    @Column(unique = true, nullable = false)
+    private String questionImage; // stores the URI as String
+    @Column(nullable = false)
     private LocalDateTime creationDate;
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private LocalDateTime lastUpdatedOn;
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String hierachy;
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String username;
 
     public static Flashcard createEmptyFlashcard(Long ID, String username, String hierachy) {
@@ -59,8 +39,8 @@ public class Flashcard {
                 null,
                 "",
                 null,
-                null,
-                null,
+                LocalDateTime.now(),
+                LocalDateTime.now(),
                 hierachy,
                 username
         );
@@ -75,6 +55,22 @@ public class Flashcard {
         this.lastUpdatedOn = lastUpdatedOn;
         this.username = username;
         this.hierachy = hierachy;
+        this.ID = ID;
+    }
+
+    @Override
+    public String toString() {
+        return "Flashcard{" +
+                "ID=" + ID +
+                ", answerLatex='" + answerLatex + '\'' +
+                ", answerImage=" + answerImage +
+                ", questionLatex='" + questionLatex + '\'' +
+                ", questionImage=" + questionImage +
+                ", creationDate=" + creationDate +
+                ", lastUpdatedOn=" + lastUpdatedOn +
+                ", hierachy='" + hierachy + '\'' +
+                ", username='" + username + '\'' +
+                '}';
     }
 
     public Flashcard() {}
