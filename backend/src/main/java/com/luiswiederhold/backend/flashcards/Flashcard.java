@@ -46,7 +46,7 @@ public class Flashcard {
         );
     }
 
-    public Flashcard(Long ID, String answerLatex, URI answerImage, String questionLatex, URI questionImage, LocalDateTime creationDate, LocalDateTime lastUpdatedOn, String hierachy, String username) {
+    public Flashcard(Long ID, String answerLatex, String answerImage, String questionLatex, String questionImage, LocalDateTime creationDate, LocalDateTime lastUpdatedOn, String hierachy, String username) {
         this.answerLatex = answerLatex;
         this.answerImage = answerImage;
         this.questionLatex = questionLatex;
@@ -91,11 +91,11 @@ public class Flashcard {
         this.answerLatex = answerLatex;
     }
 
-    public URI getAnswerImage() {
+    public String getAnswerImage() {
         return answerImage;
     }
 
-    public void setAnswerImage(URI answerImage) {
+    public void setAnswerImage(String answerImage) {
         this.answerImage = answerImage;
     }
 
@@ -107,11 +107,11 @@ public class Flashcard {
         this.questionLatex = questionLatex;
     }
 
-    public URI getQuestionImage() {
+    public String getQuestionImage() {
         return questionImage;
     }
 
-    public void setQuestionImage(URI questionImage) {this.questionImage = questionImage;}
+    public void setQuestionImage(String questionImage) {this.questionImage = questionImage;}
 
     public LocalDateTime getCreationDate() {
         return creationDate;

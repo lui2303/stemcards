@@ -22,15 +22,21 @@ public class FlashCardController {
     public Flashcard createNewFlashcard(@RequestParam("questionImage") MultipartFile questionImage, @RequestParam("answerImage") MultipartFile answerImage, @RequestPart("flashcardDTO") FlashcardContentDTO flashcardContentDTO) throws LowConfidenceException {
         URI questionURI = null;
         URI answerURI = null;
+
         String questionLatex = flashcardContentDTO.getQuestionLatex();
         String answerLatex = flashcardContentDTO.getAnswerLatex();
-        Long ID = System.nanoTime();
+
+        Long ID = flashcardService.getNextFreeID();
+
+        Flashcard flashcard = Flashcard.createEmptyFlashcard(ID, flashcardContentDTO.getUsername(), flashcardContentDTO.getPathHierachy());
+
+        System.out.println(flashcard.toString());
+        // TODO : remove the flascardSideDTO as it is unecessary and only complicates things
 
         if (questionImage != null) {
-            System.out.println(flashcardService.getClass());
             questionLatex = flashcardService.image2Latex(questionImage);
 
-            FlashcardSideDTO flashcardSideDTO = new FlashcardSideDTO(ID, flashcardContentDTO.getUsername(), flashcardContentDTO.getPathHierachy(), false); // TODO: generate ID
+            FlashcardSideDTO flashcardSideDTO = new FlashcardSideDTO(ID, flashcardContentDTO.getUsername(), flashcardContentDTO.getPathHierachy(), false);
 
             questionURI = flashcardService.storeImage(questionImage, flashcardSideDTO);
         }
@@ -43,7 +49,17 @@ public class FlashCardController {
             answerURI = flashcardService.storeImage(answerImage, flashcardSideDTO);
         }
 
-        Flashcard flashcard = new Flashcard(ID, answerLatex, answerURI, questionLatex, questionURI, LocalDateTime.now(), LocalDateTime.now(), flashcardContentDTO.getPathHierachy(), flashcardContentDTO.getUsername());
+        flashcard.setID(ID);
+        flashcard.setAnswerLatex(answerLatex);
+
+        if(answerURI != null) flashcard.setAnswerImage(answerURI.toString());
+
+        flashcard.setQuestionLatex(questionLatex);
+
+        if(questionURI != null) flashcard.setQuestionImage(questionURI.toString()); // convert the URI to String to save it otherwise it is stored in binary format
+
+        flashcard.setCreationDate(LocalDateTime.now());
+        flashcard.setLastUpdatedOn(LocalDateTime.now());
 
         return flashcardService.storeFlashcard(flashcard);
     }
