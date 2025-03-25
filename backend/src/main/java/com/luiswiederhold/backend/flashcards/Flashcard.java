@@ -39,23 +39,30 @@ public class Flashcard {
                 null,
                 "",
                 null,
-                LocalDateTime.now(),
-                LocalDateTime.now(),
                 hierachy,
                 username
         );
     }
 
-    public Flashcard(Long ID, String answerLatex, String answerImage, String questionLatex, String questionImage, LocalDateTime creationDate, LocalDateTime lastUpdatedOn, String hierachy, String username) {
+    public Flashcard(Long ID, String answerLatex, String answerImage, String questionLatex, String questionImage, String hierachy, String username) {
         this.answerLatex = answerLatex;
         this.answerImage = answerImage;
         this.questionLatex = questionLatex;
         this.questionImage = questionImage;
-        this.creationDate = creationDate;
-        this.lastUpdatedOn = lastUpdatedOn;
         this.username = username;
         this.hierachy = hierachy;
         this.ID = ID;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.creationDate = LocalDateTime.now();
+        this.lastUpdatedOn = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.lastUpdatedOn = LocalDateTime.now();
     }
 
     @Override
