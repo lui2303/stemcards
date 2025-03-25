@@ -1,31 +1,70 @@
 package com.luiswiederhold.backend.flashcards;
 
 
+import jakarta.persistence.*;
 import org.springframework.cglib.core.Local;
 
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+@Entity
+@Table(name = "flashcards")
 public class Flashcard {
-    // TODO:
     // remove nanotime ID and replace it with a lazy approach by initializing a Flashcard object with null attributes
     // to set later with setters
     // move this to a Entity object to store it in the flashcard database
     // add last_score or score_history for the scores on this flashcard
     // create a algorithm to recommend flashcard with lower scores more often
 
+
+    @Override
+    public String toString() {
+        return "Flashcard{" +
+                "ID=" + ID +
+                ", answerLatex='" + answerLatex + '\'' +
+                ", answerImage=" + answerImage +
+                ", questionLatex='" + questionLatex + '\'' +
+                ", questionImage=" + questionImage +
+                ", creationDate=" + creationDate +
+                ", lastUpdatedOn=" + lastUpdatedOn +
+                ", hierachy='" + hierachy + '\'' +
+                ", username='" + username + '\'' +
+                '}';
+    }
+
+    @Id
     private Long ID;
+    @Column(unique = true, nullable = false)
     private String answerLatex;
+    @Column
     private URI answerImage;
-
+    @Column(unique = true, nullable = false)
     private String questionLatex;
+    @Column
     private URI questionImage;
-
+    @Column(unique = true, nullable = false)
     private LocalDateTime creationDate;
+    @Column(unique = true, nullable = false)
     private LocalDateTime lastUpdatedOn;
+    @Column(unique = true, nullable = false)
     private String hierachy;
+    @Column(unique = true, nullable = false)
     private String username;
+
+    public static Flashcard createEmptyFlashcard(Long ID, String username, String hierachy) {
+        return new Flashcard(
+                ID,
+                "",
+                null,
+                "",
+                null,
+                null,
+                null,
+                hierachy,
+                username
+        );
+    }
 
     public Flashcard(Long ID, String answerLatex, URI answerImage, String questionLatex, URI questionImage, LocalDateTime creationDate, LocalDateTime lastUpdatedOn, String hierachy, String username) {
         this.answerLatex = answerLatex;
@@ -36,7 +75,6 @@ public class Flashcard {
         this.lastUpdatedOn = lastUpdatedOn;
         this.username = username;
         this.hierachy = hierachy;
-        this.ID = ID;
     }
 
     public Flashcard() {}
@@ -77,9 +115,7 @@ public class Flashcard {
         return questionImage;
     }
 
-    public void setQuestionImage(URI questionImage) {
-        this.questionImage = questionImage;
-    }
+    public void setQuestionImage(URI questionImage) {this.questionImage = questionImage;}
 
     public LocalDateTime getCreationDate() {
         return creationDate;
