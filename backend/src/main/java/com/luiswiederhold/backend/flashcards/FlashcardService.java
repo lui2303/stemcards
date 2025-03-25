@@ -1,6 +1,5 @@
 package com.luiswiederhold.backend.flashcards;
 
-import com.luiswiederhold.backend.DTO.FlashcardSideDTO;
 import com.luiswiederhold.backend.exception.LowConfidenceException;
 import com.luiswiederhold.backend.flashcards.imagestorage.ImageStorageService;
 import jakarta.transaction.Transactional;
@@ -24,11 +23,11 @@ public class FlashcardService {
         return flashcardRepository.getNextSequenceValue(); // gets the next free ID value, this process needs to be done manually because the URIs need to know the ID
     }
 
-    public URI storeImage(MultipartFile image, FlashcardSideDTO flashcardSideDTO) {
+    public URI storeImage(MultipartFile image, Long ID, String username, String hierachy, boolean isAnswer) {
         // store the image of the flashcard question or the flashcard answer using the ImageStorageService API
         URI res;
         try {
-            res = imageStorageService.storeFlashcardContent(image, flashcardSideDTO);
+            res = imageStorageService.storeFlashcardContent(image, ID, username, hierachy, isAnswer);
         }catch (URISyntaxException e) {
             System.out.println(e);
             res = null;

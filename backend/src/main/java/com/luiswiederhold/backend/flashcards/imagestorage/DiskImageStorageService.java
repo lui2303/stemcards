@@ -1,6 +1,5 @@
 package com.luiswiederhold.backend.flashcards.imagestorage;
 
-import com.luiswiederhold.backend.DTO.FlashcardSideDTO;
 import com.luiswiederhold.backend.flashcards.Flashcard;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -17,45 +16,47 @@ import java.nio.file.Paths;
 @Service
 @Primary // change to @Profile("test") later
 public class DiskImageStorageService implements ImageStorageService {
+    private void checkArgumentValidity(String username, String hierachy){
+        assert hierachy != null;
+        assert username != null;
+    }
     @Override
-    public URI constructFlashcardImageURI(FlashcardSideDTO flashcardSideDTO) throws URISyntaxException {
-        if (flashcardSideDTO == null) throw new IllegalArgumentException("flashcardSideDTO must be not null");
+    public URI constructFlashcardImageURI(Long ID, String username, String hierachy, boolean isAnswer) throws URISyntaxException {
+        checkArgumentValidity(username, hierachy);
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append(DiskImageStorageServiceConfig.STORAGE_LOCATION);
         stringBuilder.append("/");
-        stringBuilder.append(flashcardSideDTO.getUsername());
+        stringBuilder.append(username);
 
-        String hierachyPath = flashcardSideDTO.getHierachy().replace("::", "/");
+        hierachy = hierachy.replace("::", "/");
 
-        if (flashcardSideDTO.getHierachy().equals("/")) {
+        if (hierachy.equals("/")) {
             stringBuilder.append("/");
         } else {
             stringBuilder.append("/");
-            stringBuilder.append(hierachyPath);
+            stringBuilder.append(hierachy);
             stringBuilder.append("/");
         }
 
-        stringBuilder.append(flashcardSideDTO.getID());
+        stringBuilder.append(ID);
         stringBuilder.append("/");
 
-        if (flashcardSideDTO.isAnswerSide()) stringBuilder.append("answer/image.png");
+        if (isAnswer) stringBuilder.append("answer/image.png");
         else stringBuilder.append("question/image.png");
 
         return Paths.get(stringBuilder.toString()).toUri();
     }
 
     @Override
-    public URI storeFlashcardContent(MultipartFile image, FlashcardSideDTO flashcardSideDTO) throws URISyntaxException {
-        URI targetURI = constructFlashcardImageURI(flashcardSideDTO);
+    public URI storeFlashcardContent(MultipartFile image, Long ID, String username, String hierachy, boolean isAnswer) throws URISyntaxException {
+        URI targetURI = constructFlashcardImageURI(ID, username, hierachy, isAnswer);
         File file = new File(targetURI);
-
-        ;
 
         if (!file.exists()) {
             try {
                 Files.createDirectories(Path.of(file.getParent()));
-                file.createNewFile();
+                if(file.createNewFile()) System.out.println("Stored image under: " + targetURI);;
             } catch (IOException e) {
                 System.out.println(e);
             }

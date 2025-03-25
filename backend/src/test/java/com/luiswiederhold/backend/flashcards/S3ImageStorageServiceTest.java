@@ -1,6 +1,5 @@
 package com.luiswiederhold.backend.flashcards;
 
-import com.luiswiederhold.backend.DTO.FlashcardSideDTO;
 import com.luiswiederhold.backend.flashcards.imagestorage.S3ImageStorageService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
