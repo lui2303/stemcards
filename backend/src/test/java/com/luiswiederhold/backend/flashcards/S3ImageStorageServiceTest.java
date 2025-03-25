@@ -18,13 +18,11 @@ public class S3ImageStorageServiceTest {
 
     @Test
     void testConstructFlashcardImageURI_HighestHierachy() {
-        Flashcard flashcard = new Flashcard(System.nanoTime(),"", null, "", null, LocalDateTime.now(), LocalDateTime.now(), "/", "wiederhold.luis@gmx.net");
-
-        FlashcardSideDTO flashcardSideDTO = FlashcardSideDTO.createFromFlashcard(flashcard, true);
+        Flashcard flashcard = new Flashcard(1L,"", null, "", null, "/", "wiederhold.luis@gmx.net");
 
         try {
-            URI expectedURI = new URI("s3://your-bucket-name/wiederhold.luis@gmx.net/null/answer/image.png");
-            URI resultURI = s3ImageStorageService.constructFlashcardImageURI(flashcardSideDTO);
+            URI expectedURI = new URI("s3://your-bucket-name/wiederhold.luis@gmx.net/1/answer/image.png");
+            URI resultURI = s3ImageStorageService.constructFlashcardImageURI(flashcard.getID(), flashcard.getUsername(), flashcard.getHierachy(), true);
             System.out.println();
             assertEquals(expectedURI, resultURI);
 
@@ -35,7 +33,7 @@ public class S3ImageStorageServiceTest {
         try {
             URI excpectedURI = new URI("s3://your-bucket-name/wiederhold.luis@gmx.net/null/question/image.png");
 
-            URI resultURI = s3ImageStorageService.constructFlashcardImageURI(flashcardSideDTO);
+            URI resultURI = s3ImageStorageService.constructFlashcardImageURI(flashcard.getID(), flashcard.getUsername(), flashcard.getHierachy(), false);
 
             assertEquals(excpectedURI, resultURI);
 
@@ -47,14 +45,12 @@ public class S3ImageStorageServiceTest {
 
     @Test
     void testConstructFlashcardImageURI_lowerHierachy() {
-        Flashcard flashcard = new Flashcard(System.nanoTime(), "", null, "", null, LocalDateTime.now(), LocalDateTime.now(), "/", "wiederhold.luis@gmx.net");
-
-        FlashcardSideDTO flashcardSideDTO = FlashcardSideDTO.createFromFlashcard(flashcard, true);
+        Flashcard flashcard = new Flashcard(1L, "", null, "", null, "/", "wiederhold.luis@gmx.net");
 
         try {
-            URI expectedURI = new URI("s3://your-bucket-name/wiederhold.luis@gmx.net/null/answer/image.png");
+            URI expectedURI = new URI("s3://your-bucket-name/wiederhold.luis@gmx.net/1/answer/image.png");
 
-            URI resultURI = s3ImageStorageService.constructFlashcardImageURI(flashcardSideDTO);
+            URI resultURI = s3ImageStorageService.constructFlashcardImageURI(flashcard.getID(), flashcard.getUsername(), flashcard.getHierachy(), true);
 
             assertEquals(expectedURI, resultURI);
         }catch (URISyntaxException e) {
@@ -62,11 +58,10 @@ public class S3ImageStorageServiceTest {
         }
 
 
-        flashcardSideDTO = FlashcardSideDTO.createFromFlashcard(flashcard, false);
         try{
-            URI expectedURI = new URI("s3://your-bucket-name/wiederhold.luis@gmx.net/null/question/image.png");
+            URI expectedURI = new URI("s3://your-bucket-name/wiederhold.luis@gmx.net/1/question/image.png");
 
-            URI resultURI = s3ImageStorageService.constructFlashcardImageURI(flashcardSideDTO);
+            URI resultURI = s3ImageStorageService.constructFlashcardImageURI(flashcard.getID(), flashcard.getUsername(), flashcard.getHierachy(), false);
 
             assertEquals(expectedURI, resultURI);
         } catch (URISyntaxException e) {
