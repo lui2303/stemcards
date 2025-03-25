@@ -10,7 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-// TODO: Username can't contain /
 @Service
 public class FlashcardService {
     @Autowired
