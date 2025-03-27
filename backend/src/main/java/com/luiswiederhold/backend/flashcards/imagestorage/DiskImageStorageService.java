@@ -49,8 +49,7 @@ public class DiskImageStorageService implements ImageStorageService {
     }
 
     @Override
-    public URI storeFlashcardContent(MultipartFile image, Long ID, String username, String hierachy, boolean isAnswer) throws URISyntaxException {
-        URI targetURI = constructFlashcardImageURI(ID, username, hierachy, isAnswer);
+    public URI storeFlashcardContent(MultipartFile image, URI targetURI) {
         File file = new File(targetURI);
 
         if (!file.exists()) {
@@ -76,6 +75,6 @@ public class DiskImageStorageService implements ImageStorageService {
         return null;
     }
 
-    // !!for testing purposes!!
+    // TODO: Add logging to the application
 
 }

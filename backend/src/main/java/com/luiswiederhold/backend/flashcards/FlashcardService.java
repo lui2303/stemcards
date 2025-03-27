@@ -25,15 +25,17 @@ public class FlashcardService {
 
     public URI storeImage(MultipartFile image, Long ID, String username, String hierachy, boolean isAnswer) {
         // store the image of the flashcard question or the flashcard answer using the ImageStorageService API
-        URI res;
+        URI targetURI;
+
         try {
-            res = imageStorageService.storeFlashcardContent(image, ID, username, hierachy, isAnswer);
+            targetURI = imageStorageService.constructFlashcardImageURI(ID, username, hierachy, isAnswer);
         }catch (URISyntaxException e) {
             System.out.println(e);
-            res = null;
+            return null;
         }
 
-        return res;
+        return imageStorageService.storeFlashcardContent(image, targetURI);
+
     }
 
     public String image2Latex(MultipartFile image) throws LowConfidenceException {

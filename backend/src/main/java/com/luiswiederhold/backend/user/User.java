@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "users")
 public class User {
+    // TODO: add all user paths to the user database and make them queriable
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;

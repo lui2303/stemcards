@@ -8,6 +8,6 @@ import java.net.URISyntaxException;
 
 public interface ImageStorageService {
     URI constructFlashcardImageURI(Long ID, String username, String hierachy, boolean isAnswer) throws URISyntaxException;
-    URI storeFlashcardContent(MultipartFile image, Long ID, String username, String hierachy, boolean isAnswer) throws URISyntaxException;
+    URI storeFlashcardContent(MultipartFile image, URI targetURI);
     Flashcard getFlashcard(Long ID);
 }

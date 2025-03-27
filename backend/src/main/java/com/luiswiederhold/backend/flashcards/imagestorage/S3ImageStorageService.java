@@ -33,9 +33,9 @@ public class S3ImageStorageService implements ImageStorageService {
         return new URI(stringBuilder.toString());
     }
 
-    public URI storeFlashcardContent(MultipartFile image, Long ID, String username, String hierachy, boolean isAnswer) throws URISyntaxException {
+    public URI storeFlashcardContent(MultipartFile image, URI targetURI) {
         // stores a question/answer in the corresponding s3 bucket calculated by constructFlashcardImageURI and returns that URI
-        return new URI("");
+        return targetURI;
     }
 
     @Override
