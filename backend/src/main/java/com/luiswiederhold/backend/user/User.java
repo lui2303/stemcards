@@ -26,6 +26,17 @@ public class User {
         this.lastname = lastname;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", surname='" + surname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                '}';
+    }
+
     public String getSurname() {
         return surname;
     }
