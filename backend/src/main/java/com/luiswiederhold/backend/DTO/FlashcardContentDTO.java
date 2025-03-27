@@ -5,13 +5,13 @@ public class FlashcardContentDTO {
     private String questionLatex; // Latex String
     private String answerLatex;
     private String username;
-    private String pathHierachy;
+    private String hierachy;
 
     public FlashcardContentDTO(String questionLatex, String answerLatex, String username, String pathHierachy) {
         this.questionLatex = questionLatex;
         this.answerLatex = answerLatex;
         this.username = username;
-        this.pathHierachy = pathHierachy;
+        this.hierachy = pathHierachy;
     }
 
     public String getQuestionLatex() {
@@ -38,11 +38,11 @@ public class FlashcardContentDTO {
         this.username = username;
     }
 
-    public String getPathHierachy() {
-        return pathHierachy;
+    public String getHierachy() {
+        return hierachy;
     }
 
-    public void setPathHierachy(String pathHierachy) {
-        this.pathHierachy = pathHierachy;
+    public void setHierachy(String pathHierachy) {
+        this.hierachy = pathHierachy;
     }
 }

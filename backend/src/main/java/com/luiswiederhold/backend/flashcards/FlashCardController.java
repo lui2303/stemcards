@@ -27,18 +27,18 @@ public class FlashCardController {
 
         Long ID = flashcardService.getNextFreeID();
 
-        Flashcard flashcard = Flashcard.createEmptyFlashcard(ID, flashcardContentDTO.getUsername(), flashcardContentDTO.getPathHierachy());
+        Flashcard flashcard = Flashcard.createEmptyFlashcard(ID, flashcardContentDTO.getUsername(), flashcardContentDTO.getHierachy());
 
         if (questionImage != null) {
             questionLatex = flashcardService.image2Latex(questionImage);
 
-            questionURI = flashcardService.storeImage(questionImage, ID, flashcardContentDTO.getUsername(), flashcardContentDTO.getPathHierachy(), false);
+            questionURI = flashcardService.storeImage(questionImage, ID, flashcardContentDTO.getUsername(), flashcardContentDTO.getHierachy(), false);
         }
 
         if (answerImage != null) {
             answerLatex = flashcardService.image2Latex(answerImage);
 
-            answerURI = flashcardService.storeImage(answerImage, ID, flashcardContentDTO.getUsername(), flashcardContentDTO.getPathHierachy(), true);
+            answerURI = flashcardService.storeImage(answerImage, ID, flashcardContentDTO.getUsername(), flashcardContentDTO.getHierachy(), true);
         }
 
         flashcard.setAnswerLatex(answerLatex);
