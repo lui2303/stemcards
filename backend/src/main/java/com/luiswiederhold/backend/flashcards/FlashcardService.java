@@ -3,15 +3,20 @@ package com.luiswiederhold.backend.flashcards;
 import com.luiswiederhold.backend.exception.LowConfidenceException;
 import com.luiswiederhold.backend.flashcards.imagestorage.ImageStorageService;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
 @Service
 public class FlashcardService {
+
+    private static final Logger logger = LoggerFactory.getLogger(FlashcardService.class);
     @Autowired
     private FlashcardRepository flashcardRepository;
 
@@ -20,21 +25,30 @@ public class FlashcardService {
 
     @Transactional
     public Long getNextFreeID() {
-        return flashcardRepository.getNextSequenceValue(); // gets the next free ID value, this process needs to be done manually because the URIs need to know the ID
+        logger.debug("Generating next free flashcard ID");
+        Long nextFreeID = flashcardRepository.getNextSequenceValue();
+        logger.debug("Next free flashcard ID is: " + nextFreeID);
+        return nextFreeID; // gets the next free ID value, this process needs to be done manually because the URIs need to know the ID
     }
 
     public URI storeImage(MultipartFile image, Long ID, String username, String hierachy, boolean isAnswer) {
         // store the image of the flashcard question or the flashcard answer using the ImageStorageService API
+        logger.debug("Starting storage of Image: " + image.getName());
         URI targetURI;
 
         try {
             targetURI = imageStorageService.constructFlashcardImageURI(ID, username, hierachy, isAnswer);
         }catch (URISyntaxException e) {
-            System.out.println(e);
+            logger.error(e.toString());
             return null;
         }
 
-        return imageStorageService.storeFlashcardContent(image, targetURI);
+        try {
+            return imageStorageService.storeFlashcardContent(image, targetURI);
+        }catch (IOException e) {
+            logger.error(e.toString());
+            return null;
+        }
 
     }
 
@@ -44,6 +58,7 @@ public class FlashcardService {
     }
 
     public Flashcard storeFlashcard(Flashcard flashcard) {
+        logger.debug("Storing flashcard for user: " + flashcard.getUsername() + "with ID: "+ flashcard.getID());
         flashcardRepository.save(flashcard);
         return flashcard;
     }

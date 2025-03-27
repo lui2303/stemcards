@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -33,7 +34,7 @@ public class S3ImageStorageService implements ImageStorageService {
         return new URI(stringBuilder.toString());
     }
 
-    public URI storeFlashcardContent(MultipartFile image, URI targetURI) {
+    public URI storeFlashcardContent(MultipartFile image, URI targetURI) throws IOException {
         // stores a question/answer in the corresponding s3 bucket calculated by constructFlashcardImageURI and returns that URI
         return targetURI;
     }
