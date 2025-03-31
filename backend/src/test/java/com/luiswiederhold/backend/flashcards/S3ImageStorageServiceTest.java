@@ -31,7 +31,7 @@ public class S3ImageStorageServiceTest {
         }
 
         try {
-            URI excpectedURI = new URI("s3://your-bucket-name/wiederhold.luis@gmx.net/null/question/image.png");
+            URI excpectedURI = new URI("s3://your-bucket-name/wiederhold.luis@gmx.net/1/question/image.png");
 
             URI resultURI = s3ImageStorageService.constructFlashcardImageURI(flashcard.getID(), flashcard.getUsername(), flashcard.getHierachy(), false);
 

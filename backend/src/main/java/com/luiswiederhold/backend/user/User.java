@@ -18,6 +18,8 @@ public class User {
     private String surname;
     @Column
     private String lastname;
+    @Column
+    private UserPermission privilege = UserPermission.REGULAR; // admin and staff members have to be set manually
 
     public User(String email, String password, String surname, String lastname) {
         this.email = email;
@@ -35,6 +37,18 @@ public class User {
                 ", surname='" + surname + '\'' +
                 ", lastname='" + lastname + '\'' +
                 '}';
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public UserPermission getPrivilege() {
+        return privilege;
+    }
+
+    public void setPrivilege(UserPermission privilege) {
+        this.privilege = privilege;
     }
 
     public String getSurname() {

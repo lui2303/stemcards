@@ -85,6 +85,4 @@ public class DiskImageStorageService implements ImageStorageService {
         return null;
     }
 
-    // TODO: Add logging to the application
-
 }
