@@ -1,15 +1,11 @@
 package com.luiswiederhold.backend.user;
 
 import jakarta.persistence.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.Collection;
-import java.util.List;
 
 @Entity
 @Table(name = "users")
 public class User {
+    // TODO: add all user paths to the user database and make them queriable
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -22,6 +18,8 @@ public class User {
     private String surname;
     @Column
     private String lastname;
+    @Column
+    private UserPermission privilege = UserPermission.REGULAR; // admin and staff members have to be set manually
 
     public User(String email, String password, String surname, String lastname) {
         this.email = email;
@@ -30,6 +28,28 @@ public class User {
         this.lastname = lastname;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", surname='" + surname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                '}';
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public UserPermission getPrivilege() {
+        return privilege;
+    }
+
+    public void setPrivilege(UserPermission privilege) {
+        this.privilege = privilege;
+    }
 
     public String getSurname() {
         return surname;

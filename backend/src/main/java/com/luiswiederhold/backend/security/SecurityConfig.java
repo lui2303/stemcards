@@ -41,7 +41,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/register", "/login") // change for production use!
+                        .ignoringRequestMatchers("/register", "/login", "/flashcards/create") // change for production use!
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/register").permitAll()
