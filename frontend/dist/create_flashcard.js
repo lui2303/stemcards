@@ -21,17 +21,15 @@ function selectLatexButtonAnimation(pencilButton, latexButton) {
     pencilButton.classList.add("opacity-65");
 }
 if (pencilButton) {
-    if (pencilButton) {
-        pencilButton.addEventListener('click', () => {
-            canvasMode = CanvasMode.pencil;
-            selectPencilButtonAnimation(pencilButton, latexButton);
-        });
-    }
-    if (latexButton) {
-        latexButton.addEventListener('click', () => {
-            canvasMode = CanvasMode.latex;
-            selectLatexButtonAnimation(pencilButton, latexButton);
-            console.log(canvasMode == CanvasMode.latex);
-        });
-    }
+    pencilButton.addEventListener('click', () => {
+        canvasMode = CanvasMode.pencil;
+        selectPencilButtonAnimation(pencilButton, latexButton);
+    });
+}
+if (latexButton) {
+    latexButton.addEventListener('click', () => {
+        canvasMode = CanvasMode.latex;
+        selectLatexButtonAnimation(pencilButton, latexButton);
+        console.log(canvasMode == CanvasMode.latex);
+    });
 }

@@ -18,7 +18,7 @@ function selectPencilButtonAnimation(pencilButton: HTMLButtonElement, latexButto
     latexButton.classList.remove("opacity-100");
 
     pencilButton.classList.add("opacity-100");
-    latexButton.classList.add("opacity-65")
+    latexButton.classList.add("opacity-65");
 }
 
 function selectLatexButtonAnimation(pencilButton: HTMLButtonElement, latexButton: HTMLButtonElement) {
@@ -26,15 +26,14 @@ function selectLatexButtonAnimation(pencilButton: HTMLButtonElement, latexButton
     pencilButton.classList.remove("opacity-100");
 
     latexButton.classList.add("opacity-100");
-    pencilButton.classList.add("opacity-65")
+    pencilButton.classList.add("opacity-65");
 }
 
 
 
 
 if (pencilButton) {
-    if (pencilButton) {
-        pencilButton.addEventListener('click', () => {
+    pencilButton.addEventListener('click', () => {
     canvasMode = CanvasMode.pencil;
     
     selectPencilButtonAnimation(pencilButton, latexButton);
