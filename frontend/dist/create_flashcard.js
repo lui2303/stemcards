@@ -3,6 +3,7 @@ var CanvasMode;
 (function (CanvasMode) {
     CanvasMode[CanvasMode["latex"] = 0] = "latex";
     CanvasMode[CanvasMode["pencil"] = 1] = "pencil";
+    CanvasMode[CanvasMode["image"] = 2] = "image";
 })(CanvasMode || (CanvasMode = {}));
 let canvasMode = CanvasMode.pencil;
 let drawing = false;
@@ -21,17 +22,11 @@ if (canvasCtx) {
     canvasCtx.lineCap = 'round';
     canvasCtx.lineWidth = 5;
 }
-function selectPencilButtonAnimation(pencilButton, latexButton) {
-    pencilButton.classList.remove("opacity-65");
-    latexButton.classList.remove("opacity-100");
-    pencilButton.classList.add("opacity-100");
-    latexButton.classList.add("opacity-65");
-}
-function selectLatexButtonAnimation(pencilButton, latexButton) {
-    latexButton.classList.remove("opacity-65");
-    pencilButton.classList.remove("opacity-100");
-    latexButton.classList.add("opacity-100");
-    pencilButton.classList.add("opacity-65");
+function focusCanvasModeButton(buttonToUnfocus, buttonToFocus) {
+    buttonToFocus.classList.remove("opacity-65");
+    buttonToUnfocus.classList.remove("opacity-100");
+    buttonToFocus.classList.add("opacity-100");
+    buttonToUnfocus.classList.add("opacity-65");
 }
 function drawSmoothLine(x, y) {
     if (!drawing)
@@ -48,13 +43,13 @@ function drawSmoothLine(x, y) {
 if (pencilButton) {
     pencilButton.addEventListener('click', () => {
         canvasMode = CanvasMode.pencil;
-        selectPencilButtonAnimation(pencilButton, latexButton);
+        focusCanvasModeButton(latexButton, pencilButton);
     });
 }
 if (latexButton) {
     latexButton.addEventListener('click', () => {
         canvasMode = CanvasMode.latex;
-        selectLatexButtonAnimation(pencilButton, latexButton);
+        focusCanvasModeButton(pencilButton, latexButton);
     });
 }
 if (drawingCanvas) {
