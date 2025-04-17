@@ -321,6 +321,19 @@
     border-style: var(--tw-border-style);
     border-width: 1px;
   }
+  .border-8 {
+    border-style: var(--tw-border-style);
+    border-width: 8px;
+  }
+  .border-\[\#25282b\] {
+    border-color: #25282b;
+  }
+  .border-amber-50 {
+    border-color: var(--color-amber-50);
+  }
+  .border-sky-600 {
+    border-color: var(--color-sky-600);
+  }
   .bg-\[\#2d3033\] {
     background-color: #2d3033;
   }
