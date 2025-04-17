@@ -5,19 +5,33 @@ var CanvasMode;
     CanvasMode[CanvasMode["pencil"] = 1] = "pencil";
 })(CanvasMode || (CanvasMode = {}));
 let canvasMode = CanvasMode.pencil;
-const selectLatexButton = document.getElementById("select-latex");
-const selectPencilButton = document.getElementById("select-pencil");
+const latexButton = document.getElementById("select-latex");
+const pencilButton = document.getElementById("select-pencil");
 const drawingCanvas = document.getElementById("drawing-canvas");
-if (selectPencilButton) {
-    selectPencilButton.addEventListener('click', () => {
-        canvasMode = CanvasMode.pencil;
-        alert('Clicked!');
-    });
+function selectPencilButtonAnimation(pencilButton, latexButton) {
+    pencilButton.classList.remove("opacity-65");
+    latexButton.classList.remove("opacity-100");
+    pencilButton.classList.add("opacity-100");
+    latexButton.classList.add("opacity-65");
 }
-if (selectLatexButton) {
-    selectLatexButton.addEventListener('click', () => {
-        canvasMode = CanvasMode.latex;
-        alert('Clicked!');
-        console.log(canvasMode == CanvasMode.latex);
-    });
+function selectLatexButtonAnimation(pencilButton, latexButton) {
+    latexButton.classList.remove("opacity-65");
+    pencilButton.classList.remove("opacity-100");
+    latexButton.classList.add("opacity-100");
+    pencilButton.classList.add("opacity-65");
+}
+if (pencilButton) {
+    if (pencilButton) {
+        pencilButton.addEventListener('click', () => {
+            canvasMode = CanvasMode.pencil;
+            selectPencilButtonAnimation(pencilButton, latexButton);
+        });
+    }
+    if (latexButton) {
+        latexButton.addEventListener('click', () => {
+            canvasMode = CanvasMode.latex;
+            selectLatexButtonAnimation(pencilButton, latexButton);
+            console.log(canvasMode == CanvasMode.latex);
+        });
+    }
 }
