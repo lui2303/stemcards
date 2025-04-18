@@ -31,7 +31,7 @@
         
         <input class="text-[#2d3033] bg-white rounded" placeholder="Location"></input>
 
-        <div class="paintingTools flex items-center bg-[#2d3033]">
+        <div class="paintingTools flex items-center bg-[#2d3033] gap-10">
             <div>
                 <label class="flex mb-2 text-sm font-medium text-white">Schriftgröße: <span id="pencil-size-value" class="font-bold">7</span></label>
                 <input id="pencil-size"
@@ -42,7 +42,21 @@
                 class="w-full h-2 bg-sky-600 rounded-lg appearance-none cursor-pointer accent-blue-500"/>
             </div>
             
-            
+            <div class="flex flex-col items-center">
+                <label class="mb-2 text-sm font-medium text-white ">Radiergummi</label>
+                <div class="flex flex-row gap-5">
+                    <div class="flex flex-row">
+                        <button id="small-eraser" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded">Klein</button>
+                        <button id="medium-eraser" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded">Normal</button>
+                        <button id="large-eraser" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded">Groß</button>
+                        
+                    </div>
+
+                    <button id="draw" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded">Aus</button>
+                </div>
+                
+                
+            </div>
 
         </div>        
         
@@ -58,9 +72,6 @@
 
 </div>
 
-    
-
-    
 <script src="create_flashcard.js"></script>
 </body>
 </html>
