@@ -27,15 +27,13 @@
 
 
 <div class="p-10 pt-0 bg-inherit absolute w-full h-full space-y-4">
-    
     <div class="flex justify-between topHeader">
+        
         <input class="text-[#2d3033] bg-white rounded" placeholder="Location"></input>
 
         <div class="paintingTools flex items-center bg-[#2d3033]">
             <div>
-                <label class="block mb-2 text-sm font-medium text-white">
-                    Schriftgröße: <span id="pencil-size-value" class="font-bold">7</span>
-                  </label>
+                <label class="flex mb-2 text-sm font-medium text-white">Schriftgröße: <span id="pencil-size-value" class="font-bold">7</span></label>
                 <input id="pencil-size"
                 type="range"
                 min="0"
@@ -44,16 +42,20 @@
                 class="w-full h-2 bg-sky-600 rounded-lg appearance-none cursor-pointer accent-blue-500"/>
             </div>
             
-        
+            
+
         </div>        
         
         <div class="p-0 flex-none">
             <button id="select-latex" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded opacity-65">Latex</button>
             <button id="select-pencil" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded opacity-100">Stift</button>
         </div>
+
     </div>
+
   <canvas id="drawing-canvas" class="bg-white w-full h-full shadow-2xl rounded-2xl border-8 border-sky-600"></canvas>
   <button class="bg-blue-600 text-white rounded py-2 px-4 absolute right-10">Weiter zur Antwort</button>
+
 </div>
 
     
