@@ -1,4 +1,3 @@
-
 enum CanvasMode {
     latex,
     pencil,
@@ -8,6 +7,8 @@ enum CanvasMode {
 let canvasMode: CanvasMode = CanvasMode.pencil;
 let drawing: boolean = false;
 
+let pencilSize: number = 7;
+
 let lastX = 0;
 let lastY = 0;
 
@@ -16,6 +17,8 @@ const latexButton = document.getElementById("select-latex") as HTMLButtonElement
 const pencilButton = document.getElementById("select-pencil") as HTMLButtonElement;
 const drawingCanvas = document.getElementById("drawing-canvas") as HTMLCanvasElement;
 const canvasCtx = drawingCanvas.getContext("2d");
+const pencilSizeValue = document.getElementById('pencil-size-value') as HTMLLabelElement;
+const pencilSizeInput = document.getElementById("pencil-size") as HTMLInputElement;
 
 const ratio = window.devicePixelRatio || 1;
 
@@ -26,9 +29,10 @@ if (canvasCtx) {
     canvasCtx.scale(ratio, ratio); // Scale the context to match the display resolution
     canvasCtx.lineJoin = 'round';
     canvasCtx.lineCap = 'round';
-    canvasCtx.lineWidth = 5;
+    canvasCtx.lineWidth = 7;
 }
 
+// functions
 function focusCanvasModeButton(buttonToUnfocus: HTMLButtonElement, buttonToFocus: HTMLButtonElement) {
     buttonToFocus.classList.remove("opacity-65");
     buttonToUnfocus.classList.remove("opacity-100");
@@ -47,6 +51,21 @@ function drawSmoothLine(x: number, y: number) {
     lastX = x; // Update the last position
     lastY = y;
 }
+
+
+// event listener
+
+if (pencilSizeInput && pencilSizeValue) {
+    pencilSizeInput.addEventListener('input', (e) => {
+        const target = e.target as HTMLInputElement;
+        pencilSizeValue.textContent = target.value;
+
+        if(canvasCtx) canvasCtx.lineWidth = parseInt(target.value);
+        
+        pencilSize = parseInt(target.value);
+        console.log(pencilSize);
+    });
+  }
 
 
 if (pencilButton) {

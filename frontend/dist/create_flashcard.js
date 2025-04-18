@@ -7,12 +7,15 @@ var CanvasMode;
 })(CanvasMode || (CanvasMode = {}));
 let canvasMode = CanvasMode.pencil;
 let drawing = false;
+let pencilSize = 7;
 let lastX = 0;
 let lastY = 0;
 const latexButton = document.getElementById("select-latex");
 const pencilButton = document.getElementById("select-pencil");
 const drawingCanvas = document.getElementById("drawing-canvas");
 const canvasCtx = drawingCanvas.getContext("2d");
+const pencilSizeValue = document.getElementById('pencil-size-value');
+const pencilSizeInput = document.getElementById("pencil-size");
 const ratio = window.devicePixelRatio || 1;
 drawingCanvas.width = drawingCanvas.offsetWidth * ratio;
 drawingCanvas.height = drawingCanvas.offsetHeight * ratio;
@@ -20,8 +23,9 @@ if (canvasCtx) {
     canvasCtx.scale(ratio, ratio); // Scale the context to match the display resolution
     canvasCtx.lineJoin = 'round';
     canvasCtx.lineCap = 'round';
-    canvasCtx.lineWidth = 5;
+    canvasCtx.lineWidth = 7;
 }
+// functions
 function focusCanvasModeButton(buttonToUnfocus, buttonToFocus) {
     buttonToFocus.classList.remove("opacity-65");
     buttonToUnfocus.classList.remove("opacity-100");
@@ -39,6 +43,17 @@ function drawSmoothLine(x, y) {
     canvasCtx.stroke(); // Apply the stroke
     lastX = x; // Update the last position
     lastY = y;
+}
+// event listener
+if (pencilSizeInput && pencilSizeValue) {
+    pencilSizeInput.addEventListener('input', (e) => {
+        const target = e.target;
+        pencilSizeValue.textContent = target.value;
+        if (canvasCtx)
+            canvasCtx.lineWidth = parseInt(target.value);
+        pencilSize = parseInt(target.value);
+        console.log(pencilSize);
+    });
 }
 if (pencilButton) {
     pencilButton.addEventListener('click', () => {
