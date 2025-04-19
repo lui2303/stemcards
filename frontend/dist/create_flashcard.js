@@ -28,6 +28,7 @@ const smallEraserButton = document.getElementById("small-eraser");
 const mediumEraserButton = document.getElementById("medium-eraser");
 const largeEraserButton = document.getElementById("large-eraser");
 const stopEraserButton = document.getElementById('draw');
+const pencilColorInput = document.getElementById("pencil-color");
 const ratio = window.devicePixelRatio || 1;
 drawingCanvas.width = drawingCanvas.offsetWidth * ratio;
 drawingCanvas.height = drawingCanvas.offsetHeight * ratio;
@@ -75,6 +76,13 @@ if (pencilSizeInput && pencilSizeValue) {
         pencilSizeValue.textContent = target.value;
         if (canvasCtx)
             canvasCtx.lineWidth = parseInt(target.value);
+    });
+}
+if (pencilColorInput) {
+    pencilColorInput.addEventListener('input', (e) => {
+        const target = e.target;
+        if (canvasCtx)
+            canvasCtx.strokeStyle = target.value;
     });
 }
 if (pencilButton) {

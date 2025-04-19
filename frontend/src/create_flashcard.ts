@@ -36,6 +36,7 @@ const mediumEraserButton = document.getElementById("medium-eraser") as HTMLButto
 const largeEraserButton = document.getElementById("large-eraser") as HTMLButtonElement;
 const stopEraserButton = document.getElementById('draw') as HTMLButtonElement;
 
+const pencilColorInput = document.getElementById("pencil-color") as HTMLInputElement;
 
 const ratio = window.devicePixelRatio || 1;
 
@@ -94,6 +95,13 @@ if (pencilSizeInput && pencilSizeValue) {
         if(canvasCtx) canvasCtx.lineWidth = parseInt(target.value);
     });
   }
+
+if(pencilColorInput) {
+    pencilColorInput.addEventListener('input', (e) => {
+        const target = e.target as  HTMLInputElement;
+        if(canvasCtx) canvasCtx.strokeStyle = target.value;
+    });
+}
 
 
 if (pencilButton) {
