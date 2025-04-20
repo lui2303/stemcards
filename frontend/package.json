@@ -2,12 +2,15 @@
   "name": "frontend",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev:ts": "tsc --watch",
-    "dev:css": "npx @tailwindcss/cli -i ./src/styles/main.css -o ./dist/output.css --watch",
-    "dev:server": "live-server ./dist",
-    "dev": "concurrently \"npm:dev:*\""
+    "dev:css": "npx @tailwindcss/cli -i ./src/styles/main.css -o ./output.css --watch",
+    "dev:server": "live-server ./",
+    "dev": "concurrently \"npm:dev:*\"",
+    "vt": "concurrently \"vite\" \"tsc --watch\" \"npx @tailwindcss/cli -i ./src/styles/main.css -o ./output.css --watch\"",
+    "build": "vite build"
   },
   "keywords": [],
   "author": "",
@@ -15,11 +18,13 @@
   "description": "",
   "devDependencies": {
     "tailwindcss": "^4.1.4",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vite": "^6.3.2"
   },
   "dependencies": {
     "@tailwindcss/cli": "^4.1.4",
+    "canvas2svg": "github:gliffy/canvas2svg",
     "concurrently": "^9.1.2",
-    "live-server": "^1.2.2"
+    "live-server": "^1.2.0"
   }
 }

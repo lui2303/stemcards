@@ -11,11 +11,31 @@ enum EraserSize {
     none
 }
 
+
+interface Point {
+    x: number;
+    y: number;
+}
+
+interface Stroke{
+    tool: "pencil" | "eraser";
+    points: Array<Point>;
+    thickness: number;
+    color?: string;
+
+}
+
+
+
 let canvasMode: CanvasMode = CanvasMode.pencil;
 let drawing: boolean = false;
 
 let erasing: boolean = false;
 let eraserSize: EraserSize = EraserSize.none;
+
+let strokes: Array<Stroke | null> = new Array();
+
+let currentStroke: Stroke | null = null;
 
 
 let lastX = 0;
@@ -44,13 +64,15 @@ drawingCanvas.width = drawingCanvas.offsetWidth * ratio;
 drawingCanvas.height = drawingCanvas.offsetHeight * ratio;
 
 if (canvasCtx) {
-    canvasCtx.scale(ratio, ratio); // Scale the context to match the display resolution
+    canvasCtx.scale(ratio, ratio);
     canvasCtx.lineJoin = 'round';
     canvasCtx.lineCap = 'round';
     canvasCtx.lineWidth = 7;
 }
 
 // functions
+
+
 function focusCanvasModeButton(buttonToUnfocus: HTMLButtonElement, buttonToFocus: HTMLButtonElement) {
     buttonToFocus.classList.remove("opacity-65");
     buttonToUnfocus.classList.remove("opacity-100");
@@ -66,6 +88,8 @@ function drawSmoothLine(x: number, y: number) {
     canvasCtx.moveTo(lastX, lastY);
     canvasCtx.lineTo(x, y);
     canvasCtx.stroke();
+    if(currentStroke) currentStroke.points.push({"x": x, "y": y})
+
     lastX = x;
     lastY = y;
 }
@@ -82,8 +106,31 @@ function erase(eraserSize: number, clientX: number, clientY: number) {
     canvasCtx.arc(x, y, eraserSize, 0, 2 * Math.PI);
     canvasCtx.fill();
     canvasCtx.globalCompositeOperation = 'source-over';
+
+    if(currentStroke) currentStroke.points.push({"x": x, "y": y})
 }
 
+function canvas2SVG(strokes: Array<Stroke>, height: number, width: number) {
+    const svgElements = strokes.map((stroke) => {
+        if (stroke?.points.length === 0) return '';
+    
+        if (stroke?.tool === 'pencil') {
+          const d = stroke.points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ');
+          const strokeColor = stroke.color ?? '#000';
+    
+          return `<path d="${d}" stroke="${strokeColor}" stroke-width="${stroke.thickness}" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`;
+        } else {
+          return stroke?.points.map(p =>
+            `<circle cx="${p.x}" cy="${p.y}" r="${stroke?.thickness}" fill="white" />`
+          ).join('\n');
+        }
+      });
+      return `
+    <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+      ${svgElements.join('\n  ')}
+    </svg>
+    `.trim();
+}
 
 // event listener
 
@@ -121,12 +168,17 @@ if (latexButton) {
 
 if(drawingCanvas) {
     drawingCanvas.addEventListener('mousedown', (e) => {
+        if(!canvasCtx) return;
+
         if(e.button != 0) return;
         if(eraserSize != EraserSize.none) {
             erasing = true;
+            currentStroke = {tool: "eraser", color: undefined, points: new Array<Point>(), thickness: 20+eraserSize*20}
             return;
         }
 
+        currentStroke = {tool: "pencil", color: canvasCtx.strokeStyle.toString(), thickness: canvasCtx.lineWidth, points: new Array<Point>()}
+        
         lastX = e.offsetX;
         lastY = e.offsetY;
         drawing = true;
@@ -138,9 +190,6 @@ if(drawingCanvas) {
         if(drawing) {
             drawSmoothLine(e.offsetX, e.offsetY)
         }
-        console.log(erasing);
-        console.log(eraserSize);
-        
         
         if (erasing) {
             switch(eraserSize) {
@@ -152,7 +201,6 @@ if(drawingCanvas) {
                     break;
                 case EraserSize.large:
                     erase(60, e.clientX, e.clientY);
-                    console.log("Here")
                     break;
             }
 
@@ -162,11 +210,28 @@ if(drawingCanvas) {
 
 
       drawingCanvas.addEventListener('mouseup', () => {
+        console.log(currentStroke);
         drawing = false;
+        erasing = false;
+        eraserSize = EraserSize.none;
+
+        if(!currentStroke) return;
+        if(currentStroke.points.length > 0)strokes.push(currentStroke);
+        strokes.push(currentStroke);
+        currentStroke = null;
+        
     });
 
     drawingCanvas.addEventListener('mouseout', () => {
         drawing = false;
+        erasing = false;
+        eraserSize = EraserSize.none;
+
+        console.log(currentStroke)
+        if(!currentStroke) return;
+        if(currentStroke.points.length > 0)strokes.push(currentStroke);
+
+        currentStroke = null;
     });
 }
 
