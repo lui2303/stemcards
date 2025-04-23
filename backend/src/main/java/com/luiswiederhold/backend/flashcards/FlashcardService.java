@@ -1,4 +1,4 @@
-package com.luiswiederhold.backend.flashcards;
+zpackage com.luiswiederhold.backend.flashcards;
 
 import com.luiswiederhold.backend.exception.LowConfidenceException;
 import com.luiswiederhold.backend.flashcards.imagestorage.ImageStorageService;

@@ -1,4 +1,4 @@
-package com.luiswiederhold.backend.flashcards;
+zzzpackage com.luiswiederhold.backend.flashcards;
 
 import com.luiswiederhold.backend.DTO.FlashcardContentDTO;
 import com.luiswiederhold.backend.authentication.Context;
@@ -27,8 +27,15 @@ public class FlashCardController {
     @Autowired
     private Context context;
 
+    public static verify
+
     @PostMapping(value = "/flashcards/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Flashcard createNewFlashcard(@RequestParam("questionImage") MultipartFile questionImage, @RequestParam("answerImage") MultipartFile answerImage, @RequestPart("flashcardDTO") FlashcardContentDTO flashcardContentDTO) throws LowConfidenceException {
+        if(Utils.verifyFileContentType(questionImage, new ArrayList<String>("image/svg+xml")) && questionImage != null) return null;
+        if(Utils.verifyFileContentType(answerImage, new ArrayList<String>("image/svg+xml")) && answerImage != null) return null;
+        if(questionImage.isEmpty()) return null;
+        if(answerImage.isEmpty()) return null;
+
         URI questionURI = null;
         URI answerURI = null;
 
@@ -41,6 +48,7 @@ public class FlashCardController {
 
         if (questionImage != null) {
             logger.debug("questionImage is not null, trying to convert it to latex and store it afterwards...");
+
             questionLatex = flashcardService.image2Latex(questionImage);
 
             logger.debug("Detected question Latex: " + questionLatex);
