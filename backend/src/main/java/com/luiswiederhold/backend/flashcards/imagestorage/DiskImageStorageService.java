@@ -1,4 +1,4 @@
-package com.luiswiederhold.backend.flashcards.imagestorage;
+zpackage com.luiswiederhold.backend.flashcards.imagestorage;
 
 import com.luiswiederhold.backend.flashcards.FlashCardController;
 import com.luiswiederhold.backend.flashcards.Flashcard;
