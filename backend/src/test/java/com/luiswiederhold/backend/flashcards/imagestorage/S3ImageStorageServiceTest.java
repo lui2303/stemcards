@@ -1,8 +1,10 @@
-package com.luiswiederhold.backend.flashcards;
+package com.luiswiederhold.backend.flashcards.imagestorage;
 
+import com.luiswiederhold.backend.flashcards.Flashcard;
 import com.luiswiederhold.backend.flashcards.imagestorage.S3ImageStorageService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.net.URI;
@@ -14,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 public class S3ImageStorageServiceTest {
+    @InjectMocks
     private final S3ImageStorageService s3ImageStorageService = new S3ImageStorageService();
 
     @Test

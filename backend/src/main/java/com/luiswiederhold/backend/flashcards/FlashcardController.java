@@ -18,18 +18,20 @@ import org.springframework.web.multipart.MultipartFile;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
-public class FlashCardController {
-    private static final Logger logger = LoggerFactory.getLogger(FlashCardController.class);
-    @Autowired
-    private FlashcardService flashcardService;
-    @Autowired
-    private FlashcardRepository flashcardRepository;
-    @Autowired
-    private Context context;
+public class FlashcardController {
+    private static final Logger logger = LoggerFactory.getLogger(FlashcardController.class);
+    private final FlashcardService flashcardService;
+    private final FlashcardRepository flashcardRepository;
+    private final Context context;
+
+    public FlashcardController(FlashcardService flashcardService, FlashcardRepository flashcardRepository, Context context) {
+        this.flashcardService = flashcardService;
+        this.flashcardRepository = flashcardRepository;
+        this.context = context;
+    }
 
     @PostMapping(value = "/flashcards/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Flashcard createNewFlashcard(@RequestParam("questionImage") MultipartFile questionImage, @RequestParam("answerImage") MultipartFile answerImage, @RequestPart("flashcardDTO") FlashcardContentDTO flashcardContentDTO) throws LowConfidenceException {
@@ -38,6 +40,8 @@ public class FlashCardController {
 
         URI questionURI = null;
         URI answerURI = null;
+
+        if(flashcardContentDTO.getHierachy().isEmpty()) flashcardContentDTO.setHierachy("/");
 
         String questionLatex = flashcardContentDTO.getQuestionLatex();
         String answerLatex = flashcardContentDTO.getAnswerLatex();

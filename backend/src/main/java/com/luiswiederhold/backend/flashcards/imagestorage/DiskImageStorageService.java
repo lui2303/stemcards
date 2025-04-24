@@ -1,6 +1,5 @@
 package com.luiswiederhold.backend.flashcards.imagestorage;
 
-import com.luiswiederhold.backend.flashcards.FlashCardController;
 import com.luiswiederhold.backend.flashcards.Flashcard;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -49,8 +47,8 @@ public class DiskImageStorageService implements ImageStorageService {
         stringBuilder.append(ID);
         stringBuilder.append("/");
 
-        if (isAnswer) stringBuilder.append("answer/image.png");
-        else stringBuilder.append("question/image.png");
+        if (isAnswer) stringBuilder.append("answer/image.svg");
+        else stringBuilder.append("question/image.svg");
 
         URI result = Paths.get(stringBuilder.toString()).toUri();
         logger.debug("Constructed URI: " + result.toString());

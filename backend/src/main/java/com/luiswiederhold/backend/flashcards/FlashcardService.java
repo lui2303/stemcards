@@ -36,6 +36,9 @@ public class FlashcardService {
 
     public URI storeImage(MultipartFile image, Long ID, String username, String hierachy, boolean isAnswer) {
         // store the image of the flashcard question or the flashcard answer using the ImageStorageService API
+        if(image == null) return null;
+        if(image.getSize() == 0L) throw new IllegalArgumentException("File: " + image.getName() + " is empty and therefore isn't allowed to be stored");
+
         logger.debug("Starting storage of Image: " + image.getName());
         URI targetURI;
 
@@ -43,16 +46,18 @@ public class FlashcardService {
             targetURI = imageStorageService.constructFlashcardImageURI(ID, username, hierachy, isAnswer);
         }catch (URISyntaxException e) {
             logger.error(e.toString());
+            System.out.println(e.toString());
             return null;
         }
 
         try {
-            return imageStorageService.storeFlashcardContent(image, targetURI);
+            imageStorageService.storeFlashcardContent(image, targetURI);
         }catch (IOException e) {
             logger.error(e.toString());
+            System.out.println(e.toString());
             return null;
         }
-
+        return targetURI;
     }
 
     public String image2Latex(MultipartFile image) throws LowConfidenceException {
