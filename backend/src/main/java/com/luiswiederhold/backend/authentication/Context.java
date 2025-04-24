@@ -11,8 +11,11 @@ import java.util.Objects;
 
 @Service
 public class Context {
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public Context(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public static String getCurrentUsername() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

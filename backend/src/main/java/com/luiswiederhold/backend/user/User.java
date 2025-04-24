@@ -28,6 +28,8 @@ public class User {
         this.lastname = lastname;
     }
 
+    public User() {}
+
     @Override
     public String toString() {
         return "User{" +
@@ -66,8 +68,6 @@ public class User {
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
-
-    private User() {}
 
     public String getEmail() {
         return email;

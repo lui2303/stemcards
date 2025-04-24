@@ -12,7 +12,7 @@ public interface ImageStorageService {
     URI storeFlashcardContent(MultipartFile image, URI targetURI) throws IOException;
     Flashcard getFlashcard(Long ID);
 
-    default void convert svgToPng(MultipartFile image){
+    default void convertSvgToPng(MultipartFile image){
 
     }
 }
