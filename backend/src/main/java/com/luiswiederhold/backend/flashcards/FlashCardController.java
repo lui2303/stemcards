@@ -1,8 +1,10 @@
-zzzpackage com.luiswiederhold.backend.flashcards;
+package com.luiswiederhold.backend.flashcards;
 
 import com.luiswiederhold.backend.DTO.FlashcardContentDTO;
 import com.luiswiederhold.backend.authentication.Context;
 import com.luiswiederhold.backend.exception.LowConfidenceException;
+import com.luiswiederhold.backend.Utils;
+
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URI;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -27,14 +31,10 @@ public class FlashCardController {
     @Autowired
     private Context context;
 
-    public static verify
-
     @PostMapping(value = "/flashcards/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Flashcard createNewFlashcard(@RequestParam("questionImage") MultipartFile questionImage, @RequestParam("answerImage") MultipartFile answerImage, @RequestPart("flashcardDTO") FlashcardContentDTO flashcardContentDTO) throws LowConfidenceException {
-        if(Utils.verifyFileContentType(questionImage, new ArrayList<String>("image/svg+xml")) && questionImage != null) return null;
-        if(Utils.verifyFileContentType(answerImage, new ArrayList<String>("image/svg+xml")) && answerImage != null) return null;
-        if(questionImage.isEmpty()) return null;
-        if(answerImage.isEmpty()) return null;
+        if(questionImage != null && !Utils.verifyFileContentType(questionImage, new ArrayList<>(List.of("image/svg+xml")))) return null;
+        if(answerImage != null && Utils.verifyFileContentType(answerImage, new ArrayList<>(List.of("image/svg+xml")))) return null;
 
         URI questionURI = null;
         URI answerURI = null;

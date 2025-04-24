@@ -1,4 +1,4 @@
-zpackage com.luiswiederhold.backend.flashcards;
+package com.luiswiederhold.backend.flashcards;
 
 import com.luiswiederhold.backend.exception.LowConfidenceException;
 import com.luiswiederhold.backend.flashcards.imagestorage.ImageStorageService;
@@ -17,11 +17,14 @@ import java.net.URISyntaxException;
 public class FlashcardService {
 
     private static final Logger logger = LoggerFactory.getLogger(FlashcardService.class);
-    @Autowired
-    private FlashcardRepository flashcardRepository;
+    private final FlashcardRepository flashcardRepository;
 
-    @Autowired
-    private ImageStorageService imageStorageService;
+    private final ImageStorageService imageStorageService;
+
+    public FlashcardService(FlashcardRepository flashcardRepository, ImageStorageService imageStorageService) {
+        this.flashcardRepository = flashcardRepository;
+        this.imageStorageService = imageStorageService;
+    }
 
     @Transactional
     public Long getNextFreeID() {

@@ -1,4 +1,9 @@
 package com.luiswiederhold.backend;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+
 public class Utils {
     public static boolean verifyFileContentType(MultipartFile file, List<String> expectedFileTypes) {
 
