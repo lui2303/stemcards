@@ -1,0 +1,22 @@
+name: CI
+on:
+  push:
+    branches: [ "dev" ]
+  pull_request:
+    branches: [ "dev" ]
+
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build and run Docker Container
+        uses: ./.github/workflows/docker-action
+        with:
+          image_name: prod-container
+          run_container: true
+          dockerfile: 'Dockerfile.prod'
