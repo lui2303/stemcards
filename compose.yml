@@ -1,4 +1,4 @@
-services:zzz
+services:
   backend:
     build:
       context: ./backend

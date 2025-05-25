@@ -13,21 +13,15 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Java JDK
-        uses: actions/setup-java@v3.14.1
-        with:
-          distribution: 'temurin'
-          java-version: '17'
+      - name: Run Docker Compose
+        run: docker-compose -f compose.yml up -d --build
+        env:
+          DOCKERFILE: Dockerfile.prod
 
-      - name: Make gradle wrapper executable
-        run: chmod +x ./gradlew
-
-      - name: Run Gradle tests
-        run: ./gradlew test
-
+      - name: Shut down
+        run: docker-compose down
 
         
