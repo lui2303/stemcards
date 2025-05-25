@@ -15,19 +15,13 @@ jobs:
     steps:
 
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4z
 
-      - name: Setup Java JDK
-        uses: actions/setup-java@v3.14.1
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: Make gradle wrapper executable
-        run: chmod +x ./gradlew
-
-      - name: Run Gradle tests
-        run: ./gradlew test
+      - name: Run Docker Compose File
+        run:
+zzz
+        env:
+          DOCKERFILE: Dockerfile.dev
 
 
         

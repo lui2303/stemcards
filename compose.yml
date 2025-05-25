@@ -1,0 +1,5 @@
+services:zzz
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ${DOCKERFILE}
