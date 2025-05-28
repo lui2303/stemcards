@@ -11,7 +11,7 @@ import java.net.URISyntaxException;
 
 @Service
 @Profile("prod")
-public class S3ImageStorageService implements ImageStorageService {zz
+public class S3ImageStorageService implements ImageStorageService {
     @Override
     public URI constructFlashcardImageURI(Long ID, String username, String hierachy, boolean isAnswer) throws URISyntaxException {
         // creates the relative s3 bucket path for the given user/flashcard e.x. /luis/analysis2/differential_equations/piccard_lindelöf/2200/answer
