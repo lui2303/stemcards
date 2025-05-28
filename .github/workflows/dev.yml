@@ -19,13 +19,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run Docker Compose
-        run: docker compose -f compose.yml up -d --build
+        run: docker compose -f compose.yml up --build
         env:
           DOCKERFILE: Dockerfile.prod
-      - name: Env
-        run: echo ${Dockerfile}
-        env:
-          Dockerfile: "Hier"
 
       - name: Shut down
         run: docker compose down
