@@ -21,7 +21,11 @@ jobs:
       - name: Run Docker Compose
         run: docker compose -f compose.yml up -d --build
         env:
-          DOCKERFILE: ./backend/Dockerfile.prod
+          DOCKERFILE: Dockerfile.prod
+      - name: Env
+        run: echo ${Dockerfile}
+        env:
+          Dockerfile: "Hier"
 
       - name: Shut down
         run: docker compose down

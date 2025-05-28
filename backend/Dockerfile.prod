@@ -1,4 +1,7 @@
 FROM gradle:8.5-jdk17 AS test-runner
 WORKDIR /workspace
 COPY . .
-CMD ["gzradle", "clean", "build", "run"]
+CMD ["gradle", "clean", "build", "run"]
+
+
+
