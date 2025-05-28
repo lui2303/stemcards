@@ -26,3 +26,4 @@ runs:
       if: ${{inputs.run_container == 'true'}}
       run: docker run --rm ${{inputs.image_name}}
       shell: bash
+zzz

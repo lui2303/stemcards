@@ -10,7 +10,7 @@ on:
       - 'dev'
 
   workflow_dispatch:
-
+#zz
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -21,7 +21,7 @@ jobs:
       - name: Run Docker Compose
         run: docker compose -f compose.yml up -d --build
         env:
-          DOCKERFILE: Dockerfile.prod
+          DOCKERFILE: ./backend/Dockerfile.prod
 
       - name: Shut down
         run: docker compose down
