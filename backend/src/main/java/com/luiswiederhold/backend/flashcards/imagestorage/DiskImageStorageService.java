@@ -32,7 +32,7 @@ public class DiskImageStorageService implements ImageStorageService {
         checkArgumentValidity(username, hierachy);
         StringBuilder stringBuilder = new StringBuilder();
 
-        stringBuilder.append(DiskImageStorageServiceConfig.STORAGE_LOCATION);
+        stringBuilder.append(DiskImageStorageServiceConfig.STORAGE_LOCATION); // TODO: make this relative
         stringBuilder.append("/");
         stringBuilder.append(username);
 
@@ -49,11 +49,11 @@ public class DiskImageStorageService implements ImageStorageService {
         stringBuilder.append(ID);
         stringBuilder.append("/");
 
-        if (isAnswer) stringBuilder.append("answer/image.png");
-        else stringBuilder.append("question/image.png");
+        if (isAnswer) stringBuilder.append("answer/image.svg");
+        else stringBuilder.append("question/image.svg");
 
         URI result = Paths.get(stringBuilder.toString()).toUri();
-        logger.debug("Constructed URI: " + result.toString());
+        logger.debug("Constructed URI: " + result);
         return result;
     }
 
@@ -70,7 +70,6 @@ public class DiskImageStorageService implements ImageStorageService {
 
                 logger.debug("Creating the image file at targetURI: " + targetURI);
                 if(!file.createNewFile()) throw new IOException("Couldn't create file");
-
         }
 
             logger.debug("Transfering image contents to created file");

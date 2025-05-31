@@ -24,17 +24,29 @@ import java.util.List;
 @RestController
 public class FlashCardController {
     private static final Logger logger = LoggerFactory.getLogger(FlashCardController.class);
-    @Autowired
-    private FlashcardService flashcardService;
-    @Autowired
-    private FlashcardRepository flashcardRepository;
-    @Autowired
-    private Context context;
+    private final FlashcardService flashcardService;
+    private final FlashcardRepository flashcardRepository;
+    private final Context context;
+
+    public FlashCardController(FlashcardService flashcardService, FlashcardRepository flashcardRepository, Context context) {
+        this.flashcardService = flashcardService;
+        this.flashcardRepository = flashcardRepository;
+        this.context = context;
+    }
 
     @PostMapping(value = "/flashcards/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Flashcard createNewFlashcard(@RequestParam("questionImage") MultipartFile questionImage, @RequestParam("answerImage") MultipartFile answerImage, @RequestPart("flashcardDTO") FlashcardContentDTO flashcardContentDTO) throws LowConfidenceException {
-        if(questionImage != null && !Utils.verifyFileContentType(questionImage, new ArrayList<>(List.of("image/svg+xml")))) return null;
-        if(answerImage != null && Utils.verifyFileContentType(answerImage, new ArrayList<>(List.of("image/svg+xml")))) return null;
+        // TODO: handle flashcard with images and latex different to increase perfomance
+        // TODO: remove username from FlashCardContentDTO and retrieve it via the Context as the user needs to be authenticated for this route anyways
+
+        if(questionImage != null && !Utils.verifyFileContentType(questionImage, new ArrayList<>(List.of("image/svg+xml")))){
+            logger.error("The file provided for questionImage is not of type image/svg+xml");
+            return null;
+        }
+        if(answerImage != null && !Utils.verifyFileContentType(answerImage, new ArrayList<>(List.of("image/svg+xml")))) {
+            logger.error("The file provided for answerImage is not of type image/svg+xml");
+            return null;
+        }
 
         URI questionURI = null;
         URI answerURI = null;
