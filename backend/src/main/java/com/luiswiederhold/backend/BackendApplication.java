@@ -19,6 +19,7 @@ public class BackendApplication {
 
     public static void main(String[] args) {
         logger.info("Started Application");
+        System.out.println("API Key: " + System.getenv("DEEPSEEK_API_KEY"));
         SpringApplication.run(BackendApplication.class, args);
     }
 }

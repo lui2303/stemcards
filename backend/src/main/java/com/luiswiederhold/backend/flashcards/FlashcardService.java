@@ -55,11 +55,6 @@ public class FlashcardService {
 
     }
 
-    public String image2Latex(MultipartFile image) throws LowConfidenceException {
-        // API call to Mathpix Snip to convert image to Latex
-        return "";
-    }
-
     public Flashcard storeFlashcard(Flashcard flashcard) {
         logger.debug("Storing flashcard for user: " + flashcard.getUsername() + "with ID: "+ flashcard.getID());
         flashcardRepository.save(flashcard);

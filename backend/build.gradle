@@ -24,6 +24,8 @@ dependencies {
     implementation 'org.springframework.security:spring-security-config'
     implementation 'org.springframework.security:spring-security-web'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.apache.xmlgraphics:batik-transcoder:1.14'
+    implementation 'org.apache.xmlgraphics:batik-codec:1.14'
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

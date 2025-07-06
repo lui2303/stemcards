@@ -8,7 +8,6 @@ import com.luiswiederhold.backend.Utils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
 
 @RestController
 public class FlashCardController {
@@ -27,11 +26,13 @@ public class FlashCardController {
     private final FlashcardService flashcardService;
     private final FlashcardRepository flashcardRepository;
     private final Context context;
+    private final MathPixService mathPixService;
 
-    public FlashCardController(FlashcardService flashcardService, FlashcardRepository flashcardRepository, Context context) {
+    public FlashCardController(FlashcardService flashcardService, FlashcardRepository flashcardRepository, Context context, MathPixService mathPixService) {
         this.flashcardService = flashcardService;
         this.flashcardRepository = flashcardRepository;
         this.context = context;
+        this.mathPixService = mathPixService;
     }
 
     @PostMapping(value = "/flashcards/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -60,8 +61,12 @@ public class FlashCardController {
 
         if (questionImage != null) {
             logger.debug("questionImage is not null, trying to convert it to latex and store it afterwards...");
+            try {
+                questionLatex = mathPixService.convertToLatex(questionImage);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
 
-            questionLatex = flashcardService.image2Latex(questionImage);
 
             logger.debug("Detected question Latex: " + questionLatex);
 
@@ -71,7 +76,12 @@ public class FlashCardController {
 
         if (answerImage != null) {
             logger.debug("answerImage is not null, trying to convert it to latex and store it afterwards...");
-            answerLatex = flashcardService.image2Latex(answerImage);
+
+            try {
+                answerLatex = mathPixService.convertToLatex(answerImage);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
 
             logger.debug("Detected answer Latex: " + questionLatex);
             answerURI = flashcardService.storeImage(answerImage, ID, flashcardContentDTO.getUsername(), flashcardContentDTO.getHierachy(), true);
