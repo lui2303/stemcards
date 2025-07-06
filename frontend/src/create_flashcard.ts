@@ -134,26 +134,39 @@ function erase(eraserSize: number, clientX: number, clientY: number) {
     if(currentStroke) currentStroke.points.push({"x": x, "y": y})
 }
 
-function canvas2SVG(strokes: Array<Stroke>, height: number, width: number) {
-    const svgElements = strokes.map((stroke) => {
-        if (stroke?.points.length === 0) return '';
-    
-        if (stroke?.tool === 'pencil') {
-          const d = stroke.points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ');
-          const strokeColor = stroke.color ?? '#000';
-    
-          return `<path d="${d}" stroke="${strokeColor}" stroke-width="${stroke.thickness}" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`;
-        } else {
-          return stroke?.points.map(p =>
-            `<circle cx="${p.x}" cy="${p.y}" r="${stroke?.thickness}" fill="white" />`
-          ).join('\n');
-        }
-      });
-      return `
-    <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
-      ${svgElements.join('\n  ')}
-    </svg>
-    `.trim();
+function canvas2SVG(
+  strokes: Array<Stroke | null> | null,
+  height: number,
+  width: number
+) {
+  if (!strokes || strokes.length === 0) return '';
+
+  const svgElements = strokes.map((stroke) => {
+    if (!stroke || !stroke.points || stroke.points.length === 0) return '';
+
+    const strokeColor = stroke.color ?? '#000';
+    const strokeThickness = stroke.thickness ?? 1;
+
+    if (stroke.tool === 'pencil') {
+      const d = stroke.points
+        .map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`)
+        .join(' ');
+      return `<path d="${d}" stroke="${strokeColor}" stroke-width="${strokeThickness}" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`;
+    } else {
+      return stroke.points
+        .map(
+          (p) =>
+            `<circle cx="${p.x}" cy="${p.y}" r="${strokeThickness}" fill="white" />`
+        )
+        .join('\n');
+    }
+  });
+
+  return `
+<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+  ${svgElements.filter(Boolean).join('\n  ')}
+</svg>
+  `.trim();
 }
 
 // event listener
@@ -329,6 +342,7 @@ previousButton?.addEventListener('click', () => {
 
 
 finishFlashcard?.addEventListener('click', () => {
-    console.log("strokes")
+    console.log(strokes);
+    console.log(canvas2SVG(strokes, 2000, 2000))
 })
 
