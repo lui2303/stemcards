@@ -45,8 +45,11 @@ let lastY = 0;
 const latexButton = document.getElementById("select-latex") as HTMLButtonElement;
 const pencilButton = document.getElementById("select-pencil") as HTMLButtonElement;
 
-const drawingCanvas = document.getElementById("drawing-canvas") as HTMLCanvasElement;
-const canvasCtx = drawingCanvas.getContext("2d");
+const drawingQuestionCanvas = document.getElementById("drawing-question-canvas") as HTMLCanvasElement;
+const drawingQuestionCanvasCtx = drawingQuestionCanvas.getContext("2d");
+
+const drawingAnswerCanvas = document.getElementById("drawing-answer-canvas") as HTMLCanvasElement;
+const drawingAnswerCanvasCtx = drawingAnswerCanvas.getContext("2d");
 
 const pencilSizeValue = document.getElementById('pencil-size-value') as HTMLLabelElement;
 const pencilSizeInput = document.getElementById("pencil-size") as HTMLInputElement;
@@ -58,16 +61,37 @@ const stopEraserButton = document.getElementById('draw') as HTMLButtonElement;
 
 const pencilColorInput = document.getElementById("pencil-color") as HTMLInputElement;
 
+const continueButton = document.getElementById('continue-to-answer') as HTMLButtonElement;
+const previousButton = document.getElementById('back-to-question') as HTMLButtonElement
+const finishFlashcard = document.getElementById('finish-flashcard') as HTMLButtonElement
+// TODO: add return to previous side button
+
+let answer: boolean = false; // describes the flashcard side currently on
+let currentCanvas: HTMLCanvasElement = drawingQuestionCanvas;
+let currentCanvasCtx = drawingQuestionCanvasCtx;
+
+
+
 const ratio = window.devicePixelRatio || 1;
 
-drawingCanvas.width = drawingCanvas.offsetWidth * ratio;
-drawingCanvas.height = drawingCanvas.offsetHeight * ratio;
+drawingQuestionCanvas.width = drawingQuestionCanvas.offsetWidth * ratio;
+drawingQuestionCanvas.height = drawingQuestionCanvas.offsetHeight * ratio;
 
-if (canvasCtx) {
-    canvasCtx.scale(ratio, ratio);
-    canvasCtx.lineJoin = 'round';
-    canvasCtx.lineCap = 'round';
-    canvasCtx.lineWidth = 7;
+if (drawingQuestionCanvasCtx) {
+    drawingQuestionCanvasCtx.scale(ratio, ratio);
+    drawingQuestionCanvasCtx.lineJoin = 'round';
+    drawingQuestionCanvasCtx.lineCap = 'round';
+    drawingQuestionCanvasCtx.lineWidth = 7;
+}
+
+drawingAnswerCanvas.width = drawingAnswerCanvas.offsetWidth * ratio;
+drawingAnswerCanvas.height = drawingAnswerCanvas.offsetHeight * ratio;
+
+if (drawingAnswerCanvasCtx) {
+    drawingAnswerCanvasCtx.scale(ratio, ratio);
+    drawingAnswerCanvasCtx.lineJoin = 'round';
+    drawingAnswerCanvasCtx.lineCap = 'round';
+    drawingAnswerCanvasCtx.lineWidth = 7;
 }
 
 // functions
@@ -83,11 +107,11 @@ function focusCanvasModeButton(buttonToUnfocus: HTMLButtonElement, buttonToFocus
 
 function drawSmoothLine(x: number, y: number) {
     if (!drawing) return;
-    if(!canvasCtx) return;
-    canvasCtx.beginPath();
-    canvasCtx.moveTo(lastX, lastY);
-    canvasCtx.lineTo(x, y);
-    canvasCtx.stroke();
+    if(!currentCanvasCtx) return;
+    currentCanvasCtx.beginPath();
+    currentCanvasCtx.moveTo(lastX, lastY);
+    currentCanvasCtx.lineTo(x, y);
+    currentCanvasCtx.stroke();
     if(currentStroke) currentStroke.points.push({"x": x, "y": y})
 
     lastX = x;
@@ -95,17 +119,17 @@ function drawSmoothLine(x: number, y: number) {
 }
 
 function erase(eraserSize: number, clientX: number, clientY: number) {
-    if(!canvasCtx) return
+    if(!currentCanvasCtx) return
 
-    const rect = drawingCanvas.getBoundingClientRect();
+    const rect = drawingQuestionCanvas.getBoundingClientRect();
     const x = clientX - rect.left;
     const y = clientY - rect.top;
     
-    canvasCtx.globalCompositeOperation = 'destination-out';
-    canvasCtx.beginPath();
-    canvasCtx.arc(x, y, eraserSize, 0, 2 * Math.PI);
-    canvasCtx.fill();
-    canvasCtx.globalCompositeOperation = 'source-over';
+    currentCanvasCtx.globalCompositeOperation = 'destination-out';
+    currentCanvasCtx.beginPath();
+    currentCanvasCtx.arc(x, y, eraserSize, 0, 2 * Math.PI);
+    currentCanvasCtx.fill();
+    currentCanvasCtx.globalCompositeOperation = 'source-over';
 
     if(currentStroke) currentStroke.points.push({"x": x, "y": y})
 }
@@ -139,14 +163,14 @@ if (pencilSizeInput && pencilSizeValue) {
         const target = e.target as HTMLInputElement;
         pencilSizeValue.textContent = target.value;
 
-        if(canvasCtx) canvasCtx.lineWidth = parseInt(target.value);
+        if(currentCanvasCtx) currentCanvasCtx.lineWidth = parseInt(target.value);
     });
   }
 
 if(pencilColorInput) {
     pencilColorInput.addEventListener('input', (e) => {
         const target = e.target as  HTMLInputElement;
-        if(canvasCtx) canvasCtx.strokeStyle = target.value;
+        if(currentCanvasCtx) currentCanvasCtx.strokeStyle = target.value;
     });
 }
 
@@ -166,9 +190,8 @@ if (latexButton) {
     });
 }
 
-if(drawingCanvas) {
-    drawingCanvas.addEventListener('mousedown', (e) => {
-        if(!canvasCtx) return;
+function handleMouseDown (e: MouseEvent){
+        if(!currentCanvasCtx) return;
 
         if(e.button != 0) return;
         if(eraserSize != EraserSize.none) {
@@ -177,17 +200,17 @@ if(drawingCanvas) {
             return;
         }
 
-        currentStroke = {tool: "pencil", color: canvasCtx.strokeStyle.toString(), thickness: canvasCtx.lineWidth, points: new Array<Point>()}
+        currentStroke = {tool: "pencil", color: currentCanvasCtx.strokeStyle.toString(), thickness: currentCanvasCtx.lineWidth, points: new Array<Point>()}
         
         lastX = e.offsetX;
         lastY = e.offsetY;
         drawing = true;
         
-      });
-      drawingCanvas.addEventListener('mousemove', (e) => {
-        if(!canvasCtx) return;
+}
 
+function handleMouseMove(e: MouseEvent) {
         if(drawing) {
+            console.log(e.offsetX, e.offsetY)
             drawSmoothLine(e.offsetX, e.offsetY)
         }
         
@@ -205,35 +228,44 @@ if(drawingCanvas) {
             }
 
         }
-
-      });
-
-
-      drawingCanvas.addEventListener('mouseup', () => {
-        console.log(currentStroke);
-        drawing = false;
-        erasing = false;
-        eraserSize = EraserSize.none;
-
-        if(!currentStroke) return;
-        if(currentStroke.points.length > 0)strokes.push(currentStroke);
-        strokes.push(currentStroke);
-        currentStroke = null;
-        
-    });
-
-    drawingCanvas.addEventListener('mouseout', () => {
-        drawing = false;
-        erasing = false;
-        eraserSize = EraserSize.none;
-
-        console.log(currentStroke)
-        if(!currentStroke) return;
-        if(currentStroke.points.length > 0)strokes.push(currentStroke);
-
-        currentStroke = null;
-    });
 }
+
+function handleMouseUp (e: MouseEvent) {
+    console.log(currentStroke);
+    drawing = false;
+    erasing = false;
+
+    if(!currentStroke) return;
+    if(currentStroke.points.length > 0)strokes.push(currentStroke);
+    strokes.push(currentStroke);
+    currentStroke = null;
+}
+
+function handleMouseOut (e: MouseEvent) {
+    drawing = false;
+    erasing = false;
+
+    console.log(currentStroke)
+    if(!currentStroke) return;
+    if(currentStroke.points.length > 0)strokes.push(currentStroke);
+
+    currentStroke = null;
+}
+
+if(drawingQuestionCanvas){
+    drawingQuestionCanvas.addEventListener('mousedown', handleMouseDown);
+    drawingQuestionCanvas.addEventListener('mousemove', handleMouseMove);
+    drawingQuestionCanvas.addEventListener('mouseup', handleMouseUp);
+    drawingQuestionCanvas.addEventListener('mouseout', handleMouseOut);
+}
+
+if(drawingAnswerCanvas){
+    drawingAnswerCanvas.addEventListener('mousedown', handleMouseDown);
+    drawingAnswerCanvas.addEventListener('mousemove', handleMouseMove);
+    drawingAnswerCanvas.addEventListener('mouseup', handleMouseUp);
+    drawingAnswerCanvas.addEventListener('mouseout', handleMouseOut);
+}
+
 
 if(smallEraserButton) {
     smallEraserButton.addEventListener('click', () => {
@@ -259,4 +291,44 @@ if(stopEraserButton) {
         eraserSize = EraserSize.none;
     })
 }
+
+function toggleCanvas() {
+    if(answer) {
+        drawingAnswerCanvas.classList.add('invisible')
+        drawingQuestionCanvas.classList.remove('invisible')
+        currentCanvas = drawingQuestionCanvas;
+        currentCanvasCtx = drawingQuestionCanvasCtx;
+        answer=false;
+        drawing=false;
+        erasing=false;
+    } else {
+        
+        drawingQuestionCanvas.classList.add('invisible')
+        drawingAnswerCanvas.classList.remove('invisible')
+        currentCanvas = drawingAnswerCanvas;
+        currentCanvasCtx = drawingAnswerCanvasCtx;
+        answer=true;
+        drawing=false;
+        erasing=false;
+    }
+}
+
+continueButton?.addEventListener('click', () => {
+    previousButton.classList.remove('hidden')
+    continueButton.classList.add('hidden')
+    finishFlashcard.classList.remove('hidden')
+    toggleCanvas();
+} )
+
+previousButton?.addEventListener('click', () => {
+    previousButton.classList.add('hidden')
+    continueButton.classList.remove('hidden')
+    finishFlashcard.classList.add('hidden')
+    toggleCanvas()
+})
+
+
+finishFlashcard?.addEventListener('click', () => {
+    console.log("strokes")
+})
 

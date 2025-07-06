@@ -46,12 +46,12 @@
                 <label class="mb-2 text-sm font-medium text-white ">Radiergummi</label>
                 <div class="flex flex-row gap-5">
                     <div class="flex flex-row">
-                        <button id="small-eraser" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded">Klein</button>
-                        <button id="medium-eraser" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded">Normal</button>
-                        <button id="large-eraser" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded">Groß</button>
+                        <button id="small-eraser" class="hover:bg-blue-400 bg-blue-600 text-white font-semibold py-2 px-4 rounded">Klein</button>
+                        <button id="medium-eraser" class="hover:bg-blue-400 bg-blue-600 text-white font-semibold py-2 px-4 rounded">Normal</button>
+                        <button id="large-eraser" class="hover:bg-blue-400 bg-blue-600 text-white font-semibold py-2 px-4 rounded">Groß</button>
                     </div>
 
-                    <button id="draw" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded">Aus</button>
+                    <button id="draw" class="hover:bg-blue-400 bg-blue-600 text-white font-semibold py-2 px-4 rounded">Aus</button>
                 </div>
                 
                 
@@ -62,18 +62,25 @@
                 <input id="pencil-color" type="color">
             </div>
 
-        </div>        
-        
+        </div>
         <div class="p-0 flex-none">
             <button id="select-latex" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded opacity-65">Latex</button>
             <button id="select-pencil" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded opacity-100">Stift</button>
         </div>
 
     </div>
-
-  <canvas id="drawing-canvas" class="bg-white w-full h-full shadow-2xl rounded-2xl border-8 border-sky-600"></canvas>
-  <button id="continue-to-answer" class="bg-blue-600 text-white rounded py-2 px-4 absolute right-10">Weiter zur Antwort</button>
-
+  <div class="relative w-full h-full">
+    <canvas id="drawing-question-canvas" class="absolute top-0 left-0 bg-white w-full h-full shadow-2xl rounded-2xl border-8 border-sky-600"></canvas>
+  
+    <canvas id="drawing-answer-canvas" class="absolute top-0 left-0 invisible bg-white w-full h-full shadow-2xl rounded-2xl border-8 border-sky-600"></canvas>
+  </div>
+  
+  <div class="flex justify-between flex-row relative">
+    <button id="back-to-question" class="hover:bg-blue-400 hidden bg-blue-600 text-white rounded py-2 px-4 absolute left-0">Zurück zur Frage</button>
+    <button id="continue-to-answer" class="hover:bg-blue-400 bg-blue-600 text-white rounded py-2 px-4 absolute right-0">Weiter zur Antwort</button>
+    <button id="finish-flashcard" class="hover:bg-blue-400 hidden bg-blue-600 text-white rounded py-2 px-4 absolute right-0">Fertigstellen</button>
+  </div>
+  
 </div>
 
 
