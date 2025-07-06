@@ -26,14 +26,15 @@ interface Stroke{
 }
 
 
-
 let canvasMode: CanvasMode = CanvasMode.pencil;
 let drawing: boolean = false;
 
 let erasing: boolean = false;
 let eraserSize: EraserSize = EraserSize.none;
 
-let strokes: Array<Stroke | null> = new Array();
+let questionStrokes: Array<Stroke | null> = new Array();
+
+let answerStrokes: Array<Stroke | null> = new Array();
 
 let currentStroke: Stroke | null = null;
 
@@ -167,7 +168,7 @@ function canvas2SVG(
   ${svgElements.filter(Boolean).join('\n  ')}
 </svg>
   `.trim();
-}
+} // TODO: make erasing more efficient to reduce network costs
 
 // event listener
 
@@ -249,8 +250,8 @@ function handleMouseUp (e: MouseEvent) {
     erasing = false;
 
     if(!currentStroke) return;
-    if(currentStroke.points.length > 0)strokes.push(currentStroke);
-    strokes.push(currentStroke);
+    if(currentStroke.points.length > 0) answer ? answerStrokes.push(currentStroke) : questionStrokes.push(currentStroke);
+
     currentStroke = null;
 }
 
@@ -260,7 +261,7 @@ function handleMouseOut (e: MouseEvent) {
 
     console.log(currentStroke)
     if(!currentStroke) return;
-    if(currentStroke.points.length > 0)strokes.push(currentStroke);
+    if(currentStroke.points.length > 0) answer ? answerStrokes.push(currentStroke) : questionStrokes.push(currentStroke);
 
     currentStroke = null;
 }
@@ -342,7 +343,7 @@ previousButton?.addEventListener('click', () => {
 
 
 finishFlashcard?.addEventListener('click', () => {
-    console.log(strokes);
-    console.log(canvas2SVG(strokes, 2000, 2000))
+    console.log(answerStrokes);
+    console.log(canvas2SVG(answerStrokes, drawingAnswerCanvas.height, drawingAnswerCanvas.width))
 })
 
