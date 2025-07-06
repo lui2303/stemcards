@@ -42,6 +42,7 @@ let currentStroke: Stroke | null = null;
 let lastX = 0;
 let lastY = 0;
 
+const hierachyInput = document.getElementById("hierachy") as HTMLInputElement;
 
 const latexButton = document.getElementById("select-latex") as HTMLButtonElement;
 const pencilButton = document.getElementById("select-pencil") as HTMLButtonElement;
@@ -342,8 +343,64 @@ previousButton?.addEventListener('click', () => {
 })
 
 
+
+
 finishFlashcard?.addEventListener('click', () => {
     console.log(answerStrokes);
     console.log(canvas2SVG(answerStrokes, drawingAnswerCanvas.height, drawingAnswerCanvas.width))
+    createFlashcard()
 })
+
+
+async function createFlashcard() {
+    let answerFile = new Blob();
+    if(answerStrokes.length > 0) {
+        const answerBlob = new Blob([canvas2SVG(answerStrokes, drawingAnswerCanvas.height, drawingAnswerCanvas.width)], { type: 'image/svg+xml' });
+
+        answerFile = new File([answerBlob], 'drawing.svg', { type: 'image/svg+xml' });
+    }
+    
+    let questionFile = new Blob();
+
+    if(questionStrokes.length > 0) {
+        const questionBlob = new Blob([canvas2SVG(questionStrokes, drawingQuestionCanvas.height, drawingQuestionCanvas.width)], { type: 'image/svg+xml' });
+
+        questionFile = new File([questionBlob], 'drawing.svg', { type: 'image/svg+xml' });
+    }
+
+    const formData = new FormData();
+    const flashcardDTO = {
+        questionLatex: null,
+        answerLatex: null,
+        username: "wiederhold.luis@gmx.de",
+        hierachy: hierachyInput.value,
+    };
+
+    const username = 'wiederhold.luis@gmx.de';
+    const password = '123';
+    const basicAuth = 'Basic ' + btoa(username + ':' + password);
+
+    formData.append('answerImage', answerFile);
+    formData.append('questionImage', questionFile)
+    formData.append('flashcardDTO', new Blob([JSON.stringify(flashcardDTO)], { type: 'application/json' }));
+
+
+  try {
+    const response = await fetch('http://localhost:8080/flashcards/create', {
+      method: 'POST',
+      body: formData,
+
+      headers: {
+        'Authorization': basicAuth,
+      },
+    });
+
+    if (!response.ok) throw new Error('Network response was not ok');
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Fetch error:', error);
+  }
+}
+
 
