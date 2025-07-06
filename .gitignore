@@ -1,11 +1,9 @@
-<<<<<<< HEAD
 .idea/
 backend/.gradle/
 backend/.idea/
 backend/build/
 backend/logs/
 backend/gffzzz
-=======
 sciencecards.iml
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 .idea/
@@ -69,4 +67,3 @@ sciencecards.iml
 
 ### VS Code ###
 /backend/.vscode/
->>>>>>> 4046cb2135030f88e799727786d0f263b48856a6
