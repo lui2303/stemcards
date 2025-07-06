@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,            
+    "outDir": "./",
+    "rootDir": "./",
+    "module": "ESNext",          // Target ES Modules
+    "moduleResolution": "Node",  // Use Node.js resolution
+    "esModuleInterop": true,     // Enable ES module interop
+    "strict": true,
+    "target": "ESNext",          // Target the latest ECMAScript version
+    "jsx": "react-jsx",
+    "noEmit": true
+  },
+  "include": ["src/**/*", "vite.config.js"],
+  "exclude": ["node_modules"],
+}
