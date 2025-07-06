@@ -230,14 +230,8 @@
   .h-2 {
     height: calc(var(--spacing) * 2);
   }
-  .h-\[300px\] {
-    height: 300px;
-  }
   .h-full {
     height: 100%;
-  }
-  .w-\[500px\] {
-    width: 500px;
   }
   .w-full {
     width: 100%;
